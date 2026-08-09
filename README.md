@@ -216,6 +216,9 @@ event.
 
 ## If you are one of the 14 victims
 
+**Not sure if you were hit?** → **[CHECK-IF-AFFECTED.md](CHECK-IF-AFFECTED.md)** — a
+2-minute check using only a block explorer, no wallet connection required.
+
 Check [VICTIMS.md](VICTIMS.md) — if your address is listed, this happened to you too.
 
 **What is worth doing:**
