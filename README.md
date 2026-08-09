@@ -32,10 +32,33 @@ Token stolen: Binance-Peg BSC-USD (USDT) `0x55d398326f99059ff775485246999027b319
 1. **Paid Facebook/Reels advertising** promotes a "issue a virtual card" offer.
    Meta campaign ID `120253487369790536`, campaign name `KING_SUMMER_080`.
 2. The ad links to the phishing site **`trusted-settings.com`**.
-3. The site asks the victim to connect a wallet and press an "issue card" button.
-   What is actually signed is an **unlimited ERC-20 approval** to the drainer contract.
+3. The site presents a working-looking product flow — see below — ending in a wallet
+   connection. What is actually signed is an **unlimited ERC-20 approval** to the drainer
+   contract.
 4. The operator calls function `0xdc772e94` (labelled **"Pull"**) on the contract, which
    executes `transferFrom` against the victim and sweeps the balance into the collector wallet.
+
+### The victim-side flow (mobile)
+
+Reported by a victim who went through it on iOS:
+
+1. Tap the ad in Facebook Reels → land directly on `trusted-settings.com` (no intermediate
+   redirect page)
+2. Landing page offers to issue a virtual card → tap **"issue card"**
+3. **A choice of card types is presented** — several variants to pick from. This step exists
+   purely to make the flow feel like a genuine product
+4. After choosing: *"connect wallet to issue the card"*
+5. Tapping connect fires a **deeplink that opens the wallet app directly** (Trust Wallet in
+   this case) — mobile-first, no desktop WalletConnect QR
+6. Inside the wallet, the prompt is framed as card issuance. It is the unlimited approval
+7. Sweep lands 6 seconds later
+
+Note that the decoy pages described below were **never shown during the real attack** — the
+victim saw the full product interface. The decoys are what the site serves to scanners and
+reviewers with no wallet present.
+
+The card-selection step and the mobile deeplink flow are useful fingerprints for identifying
+the same template on the earlier, still-unidentified domains.
 
 ### The sweep is automated — six seconds
 
