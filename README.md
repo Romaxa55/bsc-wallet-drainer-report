@@ -34,9 +34,25 @@ Token stolen: Binance-Peg BSC-USD (USDT) `0x55d398326f99059ff775485246999027b319
 2. The ad links to the phishing site **`trusted-settings.com`**.
 3. The site asks the victim to connect a wallet and press an "issue card" button.
    What is actually signed is an **unlimited ERC-20 approval** to the drainer contract.
-4. Later — hours or days — the operator calls function `0xdc772e94` (labelled **"Pull"**)
-   on the contract, which executes `transferFrom` against the victim and sweeps the balance
-   into the collector wallet.
+4. The operator calls function `0xdc772e94` (labelled **"Pull"**) on the contract, which
+   executes `transferFrom` against the victim and sweeps the balance into the collector wallet.
+
+### The sweep is automated — six seconds
+
+Timing measured on one victim (this report's author):
+
+| Time (UTC) | Event |
+|---|---|
+| `22:18:34` | victim signs the approval — `100,000,000,000` USDT to `0x3a85da7f…ab11` |
+| `22:18:40` | **sweep executed — 6 seconds later**, 2,023.40 USDT taken |
+| `22:39:18` | victim revokes the approval — 21 minutes too late |
+
+Approval tx: [`0xeff085534c4e643c…`](https://bscscan.com/tx/0xeff085534c4e643cbe927bceae06d3b5c2097a6c09080a5a12dd352d7b13f24d)
+Sweep tx: [`0xd2ae7c66d3565…`](https://bscscan.com/tx/0xd2ae7c66d356598bbd01d9ac5eef912f64dac1cb7879285478a774d6ba31eb64)
+
+The operator address monitors the chain and sweeps in the next block. **There is no practical
+window in which a victim can notice and revoke.** Any advice along the lines of "revoke quickly
+if you think you signed something bad" does not apply to this operation.
 
 The victim never signs the theft transaction itself: **it is sent and gas-paid by the attacker.**
 No seed phrase or private key is ever involved — the unlimited approval is enough.
