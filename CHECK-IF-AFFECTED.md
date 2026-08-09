@@ -53,7 +53,8 @@ The theft looks like this in your history:
 | The theft tx `From` field | **not your address** — it is `0x7c51bc888362a93dab88cdbb2d6b6baed2d74f6d` |
 
 That last point is the giveaway: **you never sent the theft transaction, and you paid no gas
-for it.** The attacker sent it and paid the gas. Many victims look at their history, don't see
+on the sweep.** You did pay gas on the approval you signed — that one is yours. But the
+transfer that emptied the wallet was sent and paid for by the attacker. Many victims look at their history, don't see
 a transfer they signed, and wrongly conclude their seed phrase was stolen. It wasn't — the
 approval alone was enough.
 
