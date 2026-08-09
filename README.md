@@ -94,6 +94,35 @@ confirming nothing has been withdrawn.
 
 ---
 
+### Ad campaign parameters (for threat hunting)
+
+The full landing URL as delivered by the ad, with parameters intact:
+
+```
+https://trusted-settings.com/?utm_source=fb&utm_medium=cpc
+  &utm_campaign=KING_SUMMER_080+338267898899915
+  &utm_content=KING_SUMMER_080+338267898899915
+  &utm_term=New+Sales+ad
+  &setting=m100
+  &utm_id=120253487369790536
+  &fbclid=…
+```
+
+| Parameter | Value |
+|---|---|
+| `utm_id` (Meta campaign ID) | `120253487369790536` |
+| `utm_campaign` / `utm_content` | `KING_SUMMER_080 338267898899915` |
+| `utm_term` | `New Sales ad` |
+| `utm_medium` | `cpc` — confirms paid placement |
+| `setting` | `m100` — operator's own parameter, likely a landing variant ID |
+
+Decoding the base64 segments inside the `fbclid` yields `app_id = 6628568379` plus the field
+markers `adid`, `fdid`, `aem`, `srtc`.
+
+The naming convention `KING_SUMMER_080` and the `setting=m100` parameter are the most useful
+pivots for identifying the earlier domain(s) — the same operator most likely reused both the
+naming scheme and the landing template.
+
 ## The phishing site
 
 | | |
