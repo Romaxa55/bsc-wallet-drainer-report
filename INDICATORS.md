@@ -1,7 +1,7 @@
 # INDICATORS — canonical list
 
 **This is the single file to watch.** All new indicators (domains, collectors, cash-out hops,
-campaign IDs) are added here. Last updated: **2026-08-10** — added *When funds move* capture checklist (bridge request ID is the critical field).
+campaign IDs) are added here. Last updated: **2026-08-10** — **operation confirmed still live**; victims currently in the pipeline listed below.
 
 Everything is on BNB Smart Chain (chainId 56) unless stated otherwise.
 
@@ -134,6 +134,49 @@ HashDit Security (Telegram `@hashdit_security_bot`) — case already open, refer
 Include: bridge tx hash, request ID, target chain ID, amount, and which bridge.
 
 ---
+
+---
+
+## 🔴 OPERATION IS STILL LIVE — victims currently in the pipeline
+
+Discovered 2026-08-10 by decoding the operator's own transaction history
+(`0x7c51bc888362a93dab88cdbb2d6b6baed2d74f6d`, 95 txs: 51 `Pull` + 43 `Transfer`).
+
+### The operator funds his victims' gas
+
+43 of his transactions are small BNB transfers **to the victims themselves**. A victim with
+no BNB cannot sign the approval, so the operator pays for it. This is a distinctive,
+searchable pattern: *small BNB inbound from the operator, followed days later by an approval
+and a sweep*.
+
+It also means victims can be identified **before** they are drained.
+
+### Addresses funded but not yet swept — as of 2026-08-10
+
+| Address | Funded | State |
+|---|---|---|
+| `0xf08ddde735643ccdf922dd7f8a47b350fe56c743` | 8 days ago | **⚠ ACTIVE APPROVAL of 100,000,000,000 USDT to the drainer.** Wallet nearly empty (0.53 USDT) — the sweep will trigger the moment funds arrive |
+| `0x32c24318be3863467fec944ca0058dfe97563bb9` | 3 days ago | nonce 0, holds 30.05 USDT — funded, has not signed yet |
+| `0xb9c6a49e782d7a742263333a4164d577e75ba107` | **44 hours ago** | nonce 0 — most recent target |
+| `0xecc6ef652667496aec74d0646ad22609b018db3d` | 4 days ago | nonce 5, no approval currently |
+
+`0xf08ddde7…` is the urgent one: the approval is live and unlimited. Any deposit into that
+wallet is lost automatically.
+
+### Operator activity timeline (most recent first)
+
+```
+34 hrs ago   Pull       ← the 2026-08-08 theft
+44 hrs ago   Transfer   → 0xb9c6a49e…  (new target funded)
+3 days ago   Transfer   → 0x32c24318…
+4 days ago   Transfer   → 0xecc6ef65…
+6 days ago   Pull
+8 days ago   Transfer   → 0xf08ddde7…
+11 days ago  Pull
+```
+
+The operation did not stop after the last recorded theft — the operator kept funding new
+targets as recently as 44 hours ago.
 
 ## Phishing infrastructure
 
