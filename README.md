@@ -115,6 +115,7 @@ data   = (recipient, amount)
 **Complete data:**
 - **[ALL-SWEEPS.md](ALL-SWEEPS.md)** — all 51 sweep events: victim → collector → token → amount → timestamp
 - **[all-sweeps.csv](all-sweeps.csv)** — same data, machine-readable
+- **[GAS-FUNDING.md](GAS-FUNDING.md)** / [gas-funding.csv](gas-funding.csv) — every gas-funding transfer the operator sent to his targets, decoded tx-level
 - **[FULL-CLUSTER-ANALYSIS.md](FULL-CLUSTER-ANALYSIS.md)** — two collectors, cash-out route, totals
 - [VICTIMS.md](VICTIMS.md) — the original 14 (collector #1 only, kept for reference)
 
