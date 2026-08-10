@@ -1,7 +1,7 @@
 # INDICATORS — canonical list
 
 **This is the single file to watch.** All new indicators (domains, collectors, cash-out hops,
-campaign IDs) are added here. Last updated: **2026-08-10** — **operation confirmed still live**; victims currently in the pipeline listed below.
+campaign IDs) are added here. Last updated: **2026-08-10** — **operator traced to a Binance withdrawal (KYC lead)**; operation confirmed still live.
 
 Everything is on BNB Smart Chain (chainId 56) unless stated otherwise.
 
@@ -136,6 +136,56 @@ Include: bridge tx hash, request ID, target chain ID, amount, and which bridge.
 ---
 
 ---
+
+---
+
+## 🎯 DEANONYMIZATION LEAD — operator withdrew from a KYC exchange
+
+**Found 2026-08-10. This is the most significant lead in the case.**
+
+The operator's wallet received exactly one inbound USDT transfer in its entire history — and
+it came **directly from Binance**.
+
+```
+tx    0xe26636d7d2d8c8f7186e89c5be5a66fdca8fd3af70f826f612f42e459267c843
+from  0xeb2d2f1b8c558a40207669291fda468e50c8a0bb   ← "Binance: Hot Wallet 10"
+to    0x7c51bc888362a93dab88cdbb2d6b6baed2d74f6d   ← the operator
+value 14.99 USDT
+date  ~2026-07-12
+```
+
+### Why this matters
+
+Withdrawing from Binance requires a **verified account**. Binance holds, for that account:
+identity documents, selfie verification, address, phone, email, login IP history, device
+fingerprints and the full transaction record — including the withdrawal to this exact
+address.
+
+The operator moved funds from a KYC'd exchange account **straight onto the wallet he uses to
+deploy and operate the drainer contract**. Every subsequent action — deploying
+`0x3a85da7f43c7b9946a450b55019f3e05e637ab11`, all 51 sweeps, funding victims' gas — traces
+back to a wallet that Binance can attribute to a real, verified person.
+
+### Also confirmed
+
+The same operator address **deployed** the drainer contract:
+
+```
+contract creation tx 0x6adeed7d793e23c75cd1862680933a33ed814171f94d0f9ea0d4672d2ebb4245
+deployer 0x7c51bc888362a93dab88cdbb2d6b6baed2d74f6d
+```
+
+So deployer, operator and Binance-withdrawal recipient are **one and the same address** —
+this is not rented drainer-as-a-service with separated roles.
+
+### What would resolve it
+
+A law-enforcement request to Binance for the account that made withdrawal
+`0xe26636d7…c843` on ~2026-07-12 to address `0x7c51bc88…4f6d`. That single query maps the
+entire 45-victim operation to an identified individual.
+
+Binance operates a law-enforcement request portal (Kodex). This is not something a victim can
+submit — it requires an agency. The FBI IC3 complaints referenced below are the vehicle.
 
 ## 🔴 OPERATION IS STILL LIVE — victims currently in the pipeline
 
