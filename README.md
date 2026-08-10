@@ -108,7 +108,11 @@ data   = (recipient, amount)
 
 ## Victims
 
-Full table with amounts, timestamps and transaction hashes: **[VICTIMS.md](VICTIMS.md)**
+**Complete data:**
+- **[ALL-SWEEPS.md](ALL-SWEEPS.md)** — all 51 sweep events: victim → collector → token → amount → timestamp
+- **[all-sweeps.csv](all-sweeps.csv)** — same data, machine-readable
+- **[FULL-CLUSTER-ANALYSIS.md](FULL-CLUSTER-ANALYSIS.md)** — two collectors, cash-out route, totals
+- [VICTIMS.md](VICTIMS.md) — the original 14 (collector #1 only, kept for reference)
 
 Summary: 14 victims, 17,369.26 USD. Largest single loss **11,839.49 USD**; three losses above
 2,000 USD; the remainder are small wallets drained of everything they held (down to 11 USD).
