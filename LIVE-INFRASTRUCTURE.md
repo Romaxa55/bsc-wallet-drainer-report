@@ -346,6 +346,67 @@ them within roughly two hours. The operator is moving registrars (Fewmoretaps �
 while running the same kit, which is why preservation requests to the registrars matter now
 rather than later.
 
+## The origin was disclosed by Cloudflare — FEMO IT SOLUTIONS (AS214351, GB)
+
+DNS, certificate transparency and subdomain enumeration all dead-ended on the Cloudflare-fronted
+wave. The origin surfaced from an unexpected direction: **Cloudflare named the hosting provider
+in its response to the abuse reports** and confirmed action taken.
+
+> *"We have restricted access to the reported URL(s). We have also forwarded this report to the
+> relevant hosting provider. The host for the reported domain is: FEMOIT — FEMO IT SOLUTIONS
+> LIMITED, GB — abuse@as214351.com"*
+> — Cloudflare, responses to reports `f6ec9e359bd5f81b` and `ea239d207166eadd`, 2026-08-11
+
+```
+Hosting provider   FEMO IT SOLUTIONS LIMITED (FEMOIT)
+Autonomous System  AS214351
+Country            United Kingdom
+Abuse contact      abuse@as214351.com
+Admin contact      admin@pointtoserver.com
+```
+
+Two domains were restricted immediately: `promo-settings.com` and `promo-settings.org` now
+return HTTP 403 *"Suspected Phishing"*. Abuse report sent to FEMOIT 2026-08-11 covering the
+four that remained live, with a preservation request for the customer account and the six
+deployment timestamps as an access-log filter.
+
+## Who is who, and who holds what
+
+Every party that can be asked for something, and what each one actually has.
+
+| Party | Role | Holds | Reference |
+|---|---|---|---|
+| **FEMO IT SOLUTIONS** (AS214351, GB) | hosting the live wave | customer identity, payment instrument, billing, control-panel/SSH/API logs | reported 2026-08-11 |
+| **OVH Hosting** | hosted the earlier wave, server `ns560354` / `54.39.106.37` | customer identity, payment, billing, access logs, IP assignment history | `QPRHLVDXHC` |
+| **Fewmoretaps OÜ / Trustname** (Estonia) | registrar, 8 domains — 5 bought in 77 seconds | registering account, payment instrument, registration and login IPs | `ABS-48857` (RAA 3.18.1) |
+| **NICENIC INTERNATIONAL** (Hong Kong) | registrar, 3 domains of wave 3 | same, for that account | to be filed |
+| **Cloudflare** | CDN/proxy for waves 2 and 3, Web Analytics enabled per zone | zone account identity, payment method, access logs | 6 reports + `23366455` |
+| **Meta Platforms** | paid advertising that delivered the victims | advertiser identity, payment instrument, login IPs, device fingerprints | via FBI; brand claim via Trust Wallet |
+| **Binance** | funded the operator wallet 2026-07-11 | KYC identity of the withdrawing account | via FBI (IC3 supplement 3) |
+| **Symbiosis Finance** | bridge used to launder collector #2 | destination chain and payout address for the request ID | not yet approached |
+| **SWFT / Bridgers** | second bridge, 2026-07-04 | same, for two transactions | not yet approached |
+| **Smartsupp s.r.o.** (Czech Republic) | live-chat widget embedded in the kit | account registration and billing | key not recovered |
+
+### Where to pull each thread
+
+**Non-cryptocurrency identity** — the four fiat-paid services: FEMOIT and OVH for hosting,
+both registrars for domains, Cloudflare for the zones, Meta for the advertising. None of these
+can be bought anonymously with cryptocurrency, and each holds a payment instrument attached to
+a real person or company.
+
+**Timing correlation** — the six deployment timestamps below are the moments the operator was
+authenticated to a hosting account pushing files. For any provider holding access logs they are
+a direct filter; the connecting address in those minutes is the operator.
+
+**Chain-side** — the Binance withdrawal on 2026-07-11 attaches a KYC-verified account to the
+operator address. The two bridge legs from collector #2 need Symbiosis and SWFT to resolve the
+destination chains; the Symbiosis request ID is recorded in [INDICATORS.md](INDICATORS.md).
+
+**The 45 victims** are listed with addresses, amounts, timestamps and transaction hashes in
+[ALL-SWEEPS.md](ALL-SWEEPS.md) and [all-sweeps.csv](all-sweeps.csv). They are victims, not
+suspects — the addresses are published so that each person can recognise their own loss and file
+their own complaint, which is what makes them eligible if funds are ever seized and distributed.
+
 ## Reports filed on this cluster
 
 | Recipient | Reference | Scope |
@@ -357,8 +418,13 @@ rather than later.
 | FBI IC3 | `012e182ac6f049e18e95f3c067748f46` | five-domain cluster, legal-process asks |
 | FBI IC3 | `074a52029d8c4936aefaf50a9aa56b2f` | infrastructure map: hosting, deployment timestamps, second registrar, the $20,000 instruction |
 | Trustname registrar | `#ABS-48857` | all domains, under RAA 3.18.1 review |
-| Cloudflare | `32255066b4e04a36` + 5 more | one per live hostname |
+| Cloudflare | `32255066b4e04a36` + 5 more, follow-up `23366455` | one per live hostname — **two domains restricted, hosting provider disclosed** |
 | OVH | `QPRHLVDXHC` | origin server ns560354 / 54.39.106.37, filed via abuse form |
+| **FEMO IT SOLUTIONS** (AS214351) | sent 2026-08-11 | hosting provider of the live wave; suspension + preservation |
+| Trust Wallet security | sent 2026-08-11 | impersonated brand; trademark claim to Meta requested |
+| SlowMist / MistTrack | sent 2026-08-11 | flag collector #1 before funds move; trace bridge legs |
+| PhishDestroy | sent 2026-08-11 | 14 domains across all three waves |
+| BscScan | sent 2026-08-11 | public phishing labels on cluster addresses |
 | BNB Chain support | `4bcf92ea-7a94-4711-a02e-f882757f0fcc` | freeze/blacklist confirmed impossible |
 | Chainabuse | `264747c7-8915-471b-a362-d63f6364db9d` | public address flag |
 | HashDit | (Telegram case) | indicators, RUM tokens, decoy analysis |
