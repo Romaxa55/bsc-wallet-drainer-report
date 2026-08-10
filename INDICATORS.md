@@ -217,11 +217,29 @@ prospective victims who never signed, the operator's own wallets, or test addres
 be determined from on-chain data**. Listed for pattern correlation only — no accusation is
 implied.
 
-| Address | Funded | State |
+| Address | Funded (UTC) | Amount | Funding tx | State |
+|---|---|---|---|---|
+| `0x32c24318be3863467fec944ca0058dfe97563bb9` | 2026-08-07 02:58:09 | 0.00016863 BNB | [`0x71e8db67…814e`](https://bscscan.com/tx/0x71e8db67f7097554d0629e793ca5d00b9234930ef42fe6d147fbbe70edbf814e) | nonce 0 — never transacted; holds 30.05 USDT |
+| `0xb9c6a49e782d7a742263333a4164d577e75ba107` | 2026-08-08 12:55:50 | 0.00016799 BNB | [`0xd836cf6f…de30`](https://bscscan.com/tx/0xd836cf6f0f39437024105a8ca43bc1f63877849899f54194d272d969c8aade30) | nonce 0 — never transacted; empty |
+| `0xecc6ef652667496aec74d0646ad22609b018db3d` | 2026-08-05 17:27:49 | 0.00016703 BNB | [`0xd77ad15a…2ae2`](https://bscscan.com/tx/0xd77ad15a38ed9195472636ce96d0d7223510047d468f8a611deadb82e4592ae2) | nonce 5; empty; no allowance |
+
+### The funding amounts are computed, not arbitrary
+
+| Date (UTC) | Amount BNB | Recipient |
 |---|---|---|
-| `0x32c24318be3863467fec944ca0058dfe97563bb9` | 2026-08-07 | nonce 0 — never transacted; holds 30.05 USDT |
-| `0xb9c6a49e782d7a742263333a4164d577e75ba107` | 2026-08-08 | nonce 0 — never transacted; empty |
-| `0xecc6ef652667496aec74d0646ad22609b018db3d` | 2026-08-06 | nonce 5; empty; no allowance |
+| 2026-08-02 02:20:15 | 0.00017258 | `0xf08ddde7…` (later approved) |
+| 2026-08-05 17:27:49 | 0.00016703 | `0xecc6ef65…` |
+| 2026-08-07 02:58:09 | 0.00016863 | `0x32c24318…` |
+| 2026-08-08 12:55:50 | 0.00016799 | `0xb9c6a49e…` |
+
+Spread across all four is **under 3%**, every one around $0.10. These aren't round numbers or
+a fixed constant — they track the prevailing gas price, i.e. the sender is **calculating the
+cost of exactly one `approve` transaction at send time** and transferring precisely that.
+
+That makes a tight detection signature: *an inbound native transfer of ~0.00016–0.00018 BNB,
+sized to a single approval, from an address that has previously interacted with a known
+drainer contract.* An alert fired on that pattern would reach the victim **before** they sign,
+which is the only point at which this is preventable.
 
 None of the three overlap with the 45 confirmed victims, and none overlap with the six
 wallets that fund the collector — so they are neither confirmed victims nor known
