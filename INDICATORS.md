@@ -1,7 +1,13 @@
 # INDICATORS — canonical list
 
 **This is the single file to watch.** All new indicators (domains, collectors, cash-out hops,
-campaign IDs) are added here. Last updated: **2026-08-10** — operator traced to a Binance withdrawal (KYC lead); operation still live. Correction issued re: Rango Exchange (see *Ruled out*).
+campaign IDs) are added here. Last updated: **2026-08-10** — operator traced to a Binance withdrawal (KYC lead); operation still live.
+
+**How this repo is organised.** This file is the *operational* view: what to act on, who is at
+risk right now, what to capture when funds move. The full decoded datasets live alongside it —
+[ALL-SWEEPS.md](ALL-SWEEPS.md) (every theft), [GAS-FUNDING.md](GAS-FUNDING.md) (every gas
+pre-fund), each with a CSV. Indicators appear here first; the datasets are the reference
+behind them.
 
 Everything is on BNB Smart Chain (chainId 56) unless stated otherwise.
 
@@ -210,6 +216,10 @@ It also means victims can be identified **before** they are drained.
 Approval tx: [`0xd9f290af…d202`](https://bscscan.com/tx/0xd9f290af73c14fafe4a168edd0ea4b67f33aa2f25abb687dec1246463e8ad202) ·
 Gas funding: [`0xbf88d616…5e07`](https://bscscan.com/tx/0xbf88d6166c72c6a3983b8cb775e7f0878e05cdabd56a9c050790ef31bf0b5e07)
 
+> Full decoded dataset of every gas-funding transfer: **[GAS-FUNDING.md](GAS-FUNDING.md)** ·
+> [gas-funding.csv](gas-funding.csv). The list below is the short operational subset — the
+> wallets worth acting on right now.
+
 ### Funded by the operator — status unknown
 
 These received the operator's gas but have **no approval to the drainer**. Whether they are
@@ -221,6 +231,7 @@ implied.
 |---|---|---|---|---|
 | `0x32c24318be3863467fec944ca0058dfe97563bb9` | 2026-08-07 02:58:09 | 0.00016863 BNB | [`0x71e8db67…814e`](https://bscscan.com/tx/0x71e8db67f7097554d0629e793ca5d00b9234930ef42fe6d147fbbe70edbf814e) | nonce 0 — never transacted; holds 30.05 USDT |
 | `0xb9c6a49e782d7a742263333a4164d577e75ba107` | 2026-08-08 12:55:50 | 0.00016799 BNB | [`0xd836cf6f…de30`](https://bscscan.com/tx/0xd836cf6f0f39437024105a8ca43bc1f63877849899f54194d272d969c8aade30) | nonce 0 — never transacted; empty |
+| `0x531bdf6c39b3b85c40b371c19eac99fe49b0af67` | see dataset | in band | [dataset](GAS-FUNDING.md) | nonce 0 — never transacted; **holds 40.00 USDT** |
 | `0xecc6ef652667496aec74d0646ad22609b018db3d` | 2026-08-05 17:27:49 | 0.00016703 BNB | [`0xd77ad15a…2ae2`](https://bscscan.com/tx/0xd77ad15a38ed9195472636ce96d0d7223510047d468f8a611deadb82e4592ae2) | nonce 5; empty; no allowance |
 
 ### The funding amounts are computed, not arbitrary
