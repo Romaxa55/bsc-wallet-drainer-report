@@ -113,6 +113,7 @@ data   = (recipient, amount)
 > indicators go there first.
 
 **Complete data:**
+- **[LIVE-INFRASTRUCTURE.md](LIVE-INFRASTRUCTURE.md)** — the domain cluster, the exposed origin server, deployment timestamps, cloaking mechanics and every report filed. **Start here if you work at a registrar, CDN or hosting provider.**
 - **[ALL-SWEEPS.md](ALL-SWEEPS.md)** — all 51 sweep events: victim → collector → token → amount → timestamp
 - **[all-sweeps.csv](all-sweeps.csv)** — same data, machine-readable
 - **[GAS-FUNDING.md](GAS-FUNDING.md)** / [gas-funding.csv](gas-funding.csv) — every gas-funding transfer the operator sent to his targets, decoded tx-level
