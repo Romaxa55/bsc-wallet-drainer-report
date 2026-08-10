@@ -108,6 +108,10 @@ data   = (recipient, amount)
 
 ## Victims
 
+> **For security teams:** [INDICATORS.md](INDICATORS.md) is the canonical, always-current
+> list of every address, domain and cash-out hop in this cluster. Watch that file — new
+> indicators go there first.
+
 **Complete data:**
 - **[ALL-SWEEPS.md](ALL-SWEEPS.md)** — all 51 sweep events: victim → collector → token → amount → timestamp
 - **[all-sweeps.csv](all-sweeps.csv)** — same data, machine-readable
