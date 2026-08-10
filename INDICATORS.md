@@ -286,20 +286,117 @@ The approval to `0x3a85da7f…ab11` is **still live** as of 2026-08-10. That wal
 
 ## Phishing infrastructure
 
+Domains are split into two waves deliberately. The operator moved from a bare dedicated
+server to a CDN between 2026-07-30 and 2026-08-03, and the two waves have different
+evidentiary weight — merging them into one list would blur what is proven.
+
+### WAVE 2 — current, Cloudflare-fronted (all LIVE)
+
+Six domains, all serving the same kit, all behind Cloudflare with Web Analytics manually
+enabled per zone. Verified live 2026-08-10.
+
+| Created (UTC) | Domain | RUM site token |
+|---|---|---|
+| 2026-07-24 15:52:57 | `promo-premium.pro` | — |
+| 2026-07-28 17:32:11 | `promo-settings.com` | `b1af2c3f4e9b4448a818b78d424ae24a` |
+| 2026-07-28 17:32:31 | **`trusted-settings.com`** ← used in the theft | `096e19198fbc489e9f32df6b14b9cedb` |
+| 2026-07-28 17:33:07 | `wallet-settings.org` | `5db917b1452b4ec6ae7dcaa63b251bc0` |
+| 2026-07-28 17:33:18 | `promo-settings.org` | `1cbb8d8748b041b1b82c274ac7d899e9` |
+| 2026-07-28 17:33:28 | `trusted-settings.org` | `c7195f8643184c73a48013ea5f28aaaa` |
+
+Five of the six were created inside a **77-second window** — one interactive checkout session
+in one registrar account. Beacon build, identical across all:
+`static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496`,
+version `2024.11.0`; `POST /cdn-cgi/rum` returns 204.
+
+### WAVE 1 — earlier, non-Cloudflare, origin exposed (all dead)
+
+Served directly from an OVH dedicated server. **Correlation, not proven common origin with
+Wave 2** — see the caveat below.
+
+```
+IP           54.39.106.37
+Provider     OVH Hosting, Inc. (OrgId HO-2)
+Reverse DNS  ns560354.ip-54-39-106.net   — OVH dedicated-server naming
+Status       not responding since ~2026-08-06
+Abuse ticket QPRHLVDXHC
+```
+
+| First seen | Domain | Registrar |
+|---|---|---|
+| 2026-07-23 | `transfer-tws.ink` | NameCheap |
+| 2026-07-25 | `trusttws.net` | NameCheap |
+| 2026-07-26 | `trusttws.com` | — |
+| 2026-07-26 07:43:21 | `trustaws.com` | **Fewmoretaps OÜ / Trustname** |
+| 2026-07-30 02:07:07 | `trustwailet.net` | **Fewmoretaps OÜ / Trustname** (NS: `ARES`/`ZEUS.TRUSTNAME.COM`) |
+
+**What links the waves:** identical kit and page title; `trustaws.com` and `trustwailet.net`
+share the registrar of Wave 2; overlapping timeline — `trustwailet.net` still resolved to the
+OVH IP on 2026-08-03, five days after the Wave 2 burst was registered.
+
+**What is NOT established:** that the Wave 2 domains resolve to that same origin. Host-header
+and SNI overrides against `54.39.106.37` for three Wave 2 domains returned nothing, because the
+host is down. Treat the OVH origin as a strong earlier-wave lead, not a confirmed origin for
+the live cluster.
+
+### WAVE 3 — registered 2026-08-10, second registrar
+
+Three domains created within **47 seconds** through **NICENIC INTERNATIONAL GROUP** (Hong Kong),
+on Cloudflare nameservers. All three already return Cloudflare's "Suspected Phishing"
+interstitial. The operator rotates registrars mid-campaign.
+
+```
+14:14:00 UTC   gettrustcard.pro
+14:14:17 UTC   trust-credit-card.pro
+14:14:47 UTC   trust-credit.pro
+```
+
+### Registrar totals
+
+**Fewmoretaps OÜ d/b/a Trustname.com (Estonia)** — EIGHT domains across Waves 1 and 2.
+Abuse case `#ABS-48857`, under RAA 3.18.1 review (supersedes `#ABS-48193`).
+**NICENIC INTERNATIONAL GROUP (Hong Kong)** — three domains, Wave 3.
+
+### Advertising and campaign identifiers
+
 | | |
 |---|---|
-| Domain | `trusted-settings.com` — registered 2026-07-28, live as of 2026-08-09 |
-| Registrar | Fewmoretaps OÜ d/b/a Trustname.com (Estonia) — abuse case `#ABS-48193` |
-| DNS | Cloudflare |
 | Meta campaign ID | `120253487369790536` |
 | Campaign name | `KING_SUMMER_080 338267898899915` |
 | Landing param | `setting=m100` (operator's own; useful pivot) |
 | fbclid internals | `app_id = 6628568379`, markers `adid`, `fdid`, `aem`, `srtc` |
 
-**Earlier domain — still unidentified.** First sweep was 2026-06-30, four weeks before
-`trusted-settings.com` was registered. At least one earlier domain fed the same contract.
-Best pivots: the `KING_SUMMER` naming scheme, `setting=m100`, and the landing template
-(card-selection step → mobile wallet deeplink → decoy pages for scanners).
+### Detection invariants — use these, not the decoy headings
+
+The decoy shell **rotates**: the stylesheet defines ten variants (`v1`–`v10`) with named layouts
+`cardScanner`, `cardQueue`, `cardDevice`, `cardTunnel`, `cardTimeline`, `cardTerminal`,
+`cardMinimal`; seven were observed live ("Access Queue", "Route Scanner", "Verification
+Timeline", "Gateway Card", "Trust Gateway", "Device Trust", terminal "secure-gateway"). Any rule
+keyed to one phrase will miss most hits. These hold across every variant:
+
+1. **Title mismatch** — `<title>Crypto Cards</title>` while the rendered DOM contains only a
+   loading/verification shell. Strongest single signal.
+2. **Cookie banner string, byte-identical** across every variant and domain:
+   `"We use cookies to keep your session secure, remember access settings, and improve page delivery."`
+   with buttons `Decline` / `Confirm`. Best pivot for hunting other deployments of this kit.
+3. **Status triad** — the tokens `DONE` / `LIVE` / `NEXT` used as step states.
+4. **Fake-diagnostics lexicon** — route, gateway, session, access, verification, delivery,
+   latency, region, tunnel, TLS. No such checks are actually performed.
+5. **Randomised route path** — `/_next/static/chunks/app/<random-lowercase>/page-<hash>.js`;
+   observed: `/geccxceumlf` `/oduvakjlgx` `/pgzdtwaimmxxtvx` `/qteqayqcwgev` `/yfntgwwiuko`.
+   `x-middleware-rewrite` rewrites **every** path, including non-existent ones, to that route.
+6. **`x-robots-tag: noindex, nofollow, noarchive, nosnippet`** on every response — deliberate
+   concealment from search engines.
+7. **The asymmetry** — the document carries ~30 KB of funnel data in script tags against ~2.8 KB
+   of rendered markup. The lure ships to every client; only its display is withheld. One command
+   confirms it:
+   `curl -s https://trusted-settings.com/ | grep -o 'approve the Trust connection[^"\\]*'`
+8. **nginx origin** — static assets return native nginx ETags (hex mtime + hex length), e.g.
+   `"6a698bb7-f45"` = 2026-07-29 05:12:23 UTC / 3909 bytes. Not a serverless platform.
+
+**Earlier domain, still unidentified.** First sweep was 2026-06-30, three weeks before Wave 1
+appeared. At least one earlier domain fed the same contract. Best pivots: the `KING_SUMMER`
+naming scheme, `setting=m100`, and the cookie-banner string above.
 
 ## Funding wallets around collector #1
 
