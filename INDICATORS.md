@@ -1,7 +1,7 @@
 # INDICATORS — canonical list
 
 **This is the single file to watch.** All new indicators (domains, collectors, cash-out hops,
-campaign IDs) are added here. Last updated: **2026-08-10** (Route A endpoint identified as Symbiosis bridge).
+campaign IDs) are added here. Last updated: **2026-08-10** — added *When funds move* capture checklist (bridge request ID is the critical field).
 
 Everything is on BNB Smart Chain (chainId 56) unless stated otherwise.
 
@@ -67,6 +67,73 @@ Method selector used on the bridge: `0x9ddf93bb`. 30,027 USDT total left the cha
 
 **Prediction:** the 17,369.26 USDT still sitting on collector #1 will most likely follow one
 of these two routes. Pre-notifying both endpoints beats reacting afterwards.
+
+---
+
+## ⚠ When funds move — what to capture
+
+**Read this before doing anything else if collector #1 moves.**
+
+Both observed cash-out routes exit BSC through bridges, and the bridge request ID is the
+only field that lets a bridge team map the destination-chain payout. Miss it, and the trail
+stops at the BSC boundary. Capture it *from the transaction receipt*, not from the explorer
+summary view.
+
+### 1. The bridge transaction hash
+
+The tx where funds leave `0x5655e7a5197cc1a1805387bc82dfffe901dfc552`.
+
+### 2. The bridge request ID — the critical pivot
+
+**If the destination is Symbiosis** (`0x5aa5f7f84ed0e5db0a4a85c3947ea16b53352fd4`):
+
+Look in the receipt logs for an event on the Symbiosis contract with
+
+```
+topic0 = 0x31325fe0a1a2e6a5b1e41572156ba5b4e94f0fae7e7f63ec21e9b5ce1e4b3eab
+```
+
+From that event, record:
+
+| Field | Where | Example from Route A |
+|---|---|---|
+| **Request ID** | `data[0]` | `4b6b193fff82da0cb254601eac1b9fbb6258c810dda98073d15f8852d2f8047e` |
+| Target chain internal ID | `topic2` | `0xd38bb4` = 13863348 |
+| Sender | `topic1` | the collector |
+| Amount / token | `data[2]`, `data[3]` | 24,845.976714 USDC |
+
+A second event, `topic0 = 0x5a297b2c9a9f94a0f4e5a796c74ad38e219d1185fccf5f79c18726a830c2b6f5`,
+carries the client identifier in `topic1` as ASCII — Route A showed `symbiosis-app-tw`.
+
+**If the destination is Bridgers / SWFT** (`0xb685760ebd368a891f27ae547391f4e2a289895b`):
+
+Capture any order ID present in the calldata or logs. Route B used method selector
+`0x9ddf93bb`; the observed transactions carried only the Transfer event, so the order
+reference may need to be requested from SWFT directly using the tx hash.
+
+### 3. Do NOT chase these
+
+- The address in `topic3` of the Symbiosis event is a **relayer/executor** of the bridge, not
+  attacker-controlled. Route A showed `0xd99ac0681b904991169a4f398b9043781adbe0c3` — nonce
+  253k on Arbitrum, 267k on BSC. It appears in every Symbiosis transaction.
+- The bridge contract's own token balances are **protocol liquidity**, not stolen funds.
+
+### 4. Quick way to pull the fields
+
+```bash
+# replace TX with the bridge transaction hash
+curl -s -X POST https://bsc-dataseed.binance.org/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"eth_getTransactionReceipt","params":["TX"]}' \
+  | python3 -m json.tool | grep -A6 '31325fe0a1a2e6a5b1e41572156ba5b4e94f0fae7e7f63ec21e9b5ce1e4b3eab'
+```
+
+### 5. Where to send it
+
+HashDit Security (Telegram `@hashdit_security_bot`) — case already open, reference this repo.
+Include: bridge tx hash, request ID, target chain ID, amount, and which bridge.
+
+---
 
 ## Phishing infrastructure
 
