@@ -355,9 +355,10 @@ rather than later.
 | FBI IC3 | `37289b4b2028461289a70e32c4345128` | 45 victims / 63,477 USDT, bridges |
 | FBI IC3 | `f020e29e05a446618f2911d68b1b51a0` | Binance withdrawal → operator deanon |
 | FBI IC3 | `012e182ac6f049e18e95f3c067748f46` | five-domain cluster, legal-process asks |
+| FBI IC3 | `074a52029d8c4936aefaf50a9aa56b2f` | infrastructure map: hosting, deployment timestamps, second registrar, the $20,000 instruction |
 | Trustname registrar | `#ABS-48857` | all domains, under RAA 3.18.1 review |
-| Cloudflare | `32255066b4e04a36` + 4 more | one per live hostname |
-| OVH | `QPRHLVDXHC` | origin server ns560354 / 54.39.106.37 |
+| Cloudflare | `32255066b4e04a36` + 5 more | one per live hostname |
+| OVH | `QPRHLVDXHC` | origin server ns560354 / 54.39.106.37, filed via abuse form |
 | BNB Chain support | `4bcf92ea-7a94-4711-a02e-f882757f0fcc` | freeze/blacklist confirmed impossible |
 | Chainabuse | `264747c7-8915-471b-a362-d63f6364db9d` | public address flag |
 | HashDit | (Telegram case) | indicators, RUM tokens, decoy analysis |
