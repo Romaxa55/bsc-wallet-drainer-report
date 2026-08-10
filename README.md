@@ -5,10 +5,11 @@ stolen funds sit on a single collector wallet, untouched.
 
 | | |
 |---|---|
-| **Victims** | 14 |
-| **Total stolen** | **17,369.26 USD** (Binance-Peg BSC-USD) |
+| **Victims** | **45** (updated 2026-08-10 — see [full cluster analysis](FULL-CLUSTER-ANALYSIS.md)) |
+| **Total stolen** | **63,477.36 USD** in stablecoins + other tokens |
+| **Collectors** | **2** — one already cashed out, one still holding |
 | **Period** | 2026-07-22 → 2026-08-08 |
-| **Funds moved out** | **None** (collector nonce = 1) |
+| **Funds still recoverable** | 17,369.26 USD on collector #1, untouched (nonce = 1) |
 | **Operation status** | Phishing domain still live as of 2026-08-09 |
 
 Everything below is verifiable by anyone on [bscscan.com](https://bscscan.com) — no trust required.
