@@ -228,6 +228,39 @@ wallet is lost automatically.
 The operation did not stop after the last recorded theft — the operator kept funding new
 targets as recently as 44 hours ago.
 
+### At-risk wallet — full transaction chain
+
+`0xf08ddde735643ccdf922dd7f8a47b350fe56c743`, documented end to end. Note how fast it runs:
+
+| Time (UTC) | Event | Tx |
+|---|---|---|
+| 2026-08-02 02:20:15 | operator sends metered gas, 0.00017258 BNB | `0xbf88d6166c72c6a3983b8cb775e7f0878e05cdabd56a9c050790ef31bf0b5e07` |
+| 2026-08-02 **02:21:21** | **victim approves 100,000,000,000 USDT to the drainer** — 66 seconds later | `0xd9f290af73c14fafe4a168edd0ea4b67f33aa2f25abb687dec1246463e8ad202` |
+| 2026-08-02 02:26:58 | victim approves **uint256 max** to a *second* contract | `0x1ca8eda942fa902c0e5910ef70fd38dfbd6d3820d72ff2e286f5b23f14d86548` |
+| 2026-08-02 02:27:02 | 1,000 USDT leaves via that second contract | `0x2f236fd37c5e8de56fc5dd09f4acad4240a13169f69c87f7939a9caa44bfb880` |
+
+The approval to `0x3a85da7f…ab11` is **still live** as of 2026-08-10. That wallet is armed.
+
+## Second, distinct scheme hitting the same victim
+
+The same victim was also processed through a different contract six minutes later:
+
+**`0x69460570c93f9de5e2edbc3052bf10125f0ca22d`** — 5,209 bytes, nonce 1
+- no `owner()` / `setOperator` / `operators` / `0xdc772e94` — **not** the same drainer family
+- `owner()` resolves to **`0x4be54063df659898625fc48c8161432cdd793e9b`**, which is itself a
+  contract holding 1.2613 BNB and 137.95 USDT — a different controlling entity
+- entry selector observed: `0x14d08fca`
+
+In tx `0x2f236fd3…b880` the victim sent 1,000 USDT into it. The contract took 7 USDT, routed
+993 through a swap chain (`0x2787d48e…` → `0xd25313591…` → `0x46cf1cf8…`), and returned a
+**zero-value transfer** to the victim. Whatever was promised, the victim received nothing back
+on this chain.
+
+Whether this is the same actor running a second product, an affiliate, or an unrelated scam
+that happened to catch the same person, I can't determine from on-chain data alone. Flagging
+it because a single victim being funnelled into two different contracts within six minutes
+is unlikely to be coincidence.
+
 ## Phishing infrastructure
 
 | | |
