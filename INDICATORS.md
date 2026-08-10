@@ -201,17 +201,31 @@ and a sweep*.
 
 It also means victims can be identified **before** they are drained.
 
-### Addresses funded but not yet swept — as of 2026-08-10
+### Confirmed at risk — funded AND approved
+
+| Address | Evidence |
+|---|---|
+| **`0xf08ddde735643ccdf922dd7f8a47b350fe56c743`** | Gas from operator 2026-08-02 02:20:15, approval to the drainer 02:21:21 — **66 seconds later**. Allowance of 100,000,000,000 USDT is **still live**. Balance 0.53 USDT, so nothing has been swept yet; any deposit will be taken automatically. |
+
+Approval tx: [`0xd9f290af…d202`](https://bscscan.com/tx/0xd9f290af73c14fafe4a168edd0ea4b67f33aa2f25abb687dec1246463e8ad202) ·
+Gas funding: [`0xbf88d616…5e07`](https://bscscan.com/tx/0xbf88d6166c72c6a3983b8cb775e7f0878e05cdabd56a9c050790ef31bf0b5e07)
+
+### Funded by the operator — status unknown
+
+These received the operator's gas but have **no approval to the drainer**. Whether they are
+prospective victims who never signed, the operator's own wallets, or test addresses **cannot
+be determined from on-chain data**. Listed for pattern correlation only — no accusation is
+implied.
 
 | Address | Funded | State |
 |---|---|---|
-| `0xf08ddde735643ccdf922dd7f8a47b350fe56c743` | 8 days ago | **⚠ ACTIVE APPROVAL of 100,000,000,000 USDT to the drainer.** Wallet nearly empty (0.53 USDT) — the sweep will trigger the moment funds arrive |
-| `0x32c24318be3863467fec944ca0058dfe97563bb9` | 3 days ago | nonce 0, holds 30.05 USDT — funded, has not signed yet |
-| `0xb9c6a49e782d7a742263333a4164d577e75ba107` | **44 hours ago** | nonce 0 — most recent target |
-| `0xecc6ef652667496aec74d0646ad22609b018db3d` | 4 days ago | nonce 5, no approval currently |
+| `0x32c24318be3863467fec944ca0058dfe97563bb9` | 2026-08-07 | nonce 0 — never transacted; holds 30.05 USDT |
+| `0xb9c6a49e782d7a742263333a4164d577e75ba107` | 2026-08-08 | nonce 0 — never transacted; empty |
+| `0xecc6ef652667496aec74d0646ad22609b018db3d` | 2026-08-06 | nonce 5; empty; no allowance |
 
-`0xf08ddde7…` is the urgent one: the approval is live and unlimited. Any deposit into that
-wallet is lost automatically.
+None of the three overlap with the 45 confirmed victims, and none overlap with the six
+wallets that fund the collector — so they are neither confirmed victims nor known
+infrastructure.
 
 ### Operator activity timeline (most recent first)
 
