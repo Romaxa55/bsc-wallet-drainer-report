@@ -1,7 +1,7 @@
 # INDICATORS — canonical list
 
 **This is the single file to watch.** All new indicators (domains, collectors, cash-out hops,
-campaign IDs) are added here. Last updated: **2026-08-10** — **operator traced to a Binance withdrawal (KYC lead)**; operation confirmed still live.
+campaign IDs) are added here. Last updated: **2026-08-10** — operator traced to a Binance withdrawal (KYC lead); operation still live. Correction issued re: Rango Exchange (see *Ruled out*).
 
 Everything is on BNB Smart Chain (chainId 56) unless stated otherwise.
 
@@ -236,30 +236,10 @@ targets as recently as 44 hours ago.
 |---|---|---|
 | 2026-08-02 02:20:15 | operator sends metered gas, 0.00017258 BNB | `0xbf88d6166c72c6a3983b8cb775e7f0878e05cdabd56a9c050790ef31bf0b5e07` |
 | 2026-08-02 **02:21:21** | **victim approves 100,000,000,000 USDT to the drainer** — 66 seconds later | `0xd9f290af73c14fafe4a168edd0ea4b67f33aa2f25abb687dec1246463e8ad202` |
-| 2026-08-02 02:26:58 | victim approves **uint256 max** to a *second* contract | `0x1ca8eda942fa902c0e5910ef70fd38dfbd6d3820d72ff2e286f5b23f14d86548` |
-| 2026-08-02 02:27:02 | 1,000 USDT leaves via that second contract | `0x2f236fd37c5e8de56fc5dd09f4acad4240a13169f69c87f7939a9caa44bfb880` |
+| 2026-08-02 02:26:58 | victim approves Rango Exchange (legitimate aggregator) | `0x1ca8eda942fa902c0e5910ef70fd38dfbd6d3820d72ff2e286f5b23f14d86548` |
+| 2026-08-02 02:27:02 | victim swaps/bridges 1,000 USDT via Rango — **normal user activity, not theft** | `0x2f236fd37c5e8de56fc5dd09f4acad4240a13169f69c87f7939a9caa44bfb880` |
 
 The approval to `0x3a85da7f…ab11` is **still live** as of 2026-08-10. That wallet is armed.
-
-## Second, distinct scheme hitting the same victim
-
-The same victim was also processed through a different contract six minutes later:
-
-**`0x69460570c93f9de5e2edbc3052bf10125f0ca22d`** — 5,209 bytes, nonce 1
-- no `owner()` / `setOperator` / `operators` / `0xdc772e94` — **not** the same drainer family
-- `owner()` resolves to **`0x4be54063df659898625fc48c8161432cdd793e9b`**, which is itself a
-  contract holding 1.2613 BNB and 137.95 USDT — a different controlling entity
-- entry selector observed: `0x14d08fca`
-
-In tx `0x2f236fd3…b880` the victim sent 1,000 USDT into it. The contract took 7 USDT, routed
-993 through a swap chain (`0x2787d48e…` → `0xd25313591…` → `0x46cf1cf8…`), and returned a
-**zero-value transfer** to the victim. Whatever was promised, the victim received nothing back
-on this chain.
-
-Whether this is the same actor running a second product, an affiliate, or an unrelated scam
-that happened to catch the same person, I can't determine from on-chain data alone. Flagging
-it because a single victim being funnelled into two different contracts within six minutes
-is unlikely to be coincidence.
 
 ## Phishing infrastructure
 
@@ -315,6 +295,13 @@ Checked and found **not** to be part of the cluster — listed so nobody redisco
   vanity-suffix tokens, identical 3823-byte bytecode, only `owner()`/`transferOwnership()`
 - `0xc92e8bdf79f0507f65a392b0ab4667716bfe0110` — unrelated approval revoked by a victim
 - `0x71c7656ec7ab88b098defb751b7401b5f6d8976f` — BscScan UI placeholder, not a counterparty
+- `0x69460570c93f9de5e2edbc3052bf10125f0ca22d` — **Rango V2 (Rango Diamond)**, a legitimate
+  cross-chain aggregator with 2,014,804 transactions. An earlier revision of this file
+  wrongly flagged it as a second scam contract after seeing a victim send 1,000 USDT into
+  it; that was normal swap/bridge activity, the 7 USDT was standard fee, and there is zero
+  victim overlap with this cluster. **Corrected 2026-08-10.**
+- `0x4be54063df659898625fc48c8161432cdd793e9b` — owner of the Rango contract, likewise
+  unrelated
 
 ## Reported to
 
