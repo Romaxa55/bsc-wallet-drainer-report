@@ -1,7 +1,7 @@
 # INDICATORS — canonical list
 
 **This is the single file to watch.** All new indicators (domains, collectors, cash-out hops,
-campaign IDs) are added here. Last updated: **2026-08-10**.
+campaign IDs) are added here. Last updated: **2026-08-10** (Route A endpoint identified as Symbiosis bridge).
 
 Everything is on BNB Smart Chain (chainId 56) unless stated otherwise.
 
@@ -37,10 +37,21 @@ collector #2  ──24,867.196678 USDT──►  0x980447ddcef79a7499da4538da8fc
               ──24,845.976714 USDC──►  0x5aa5f7f84ed0e5db0a4a85c3947ea16b53352fd4
 ```
 
-**Final destination `0x5aa5f7f84ed0e5db0a4a85c3947ea16b53352fd4`** — contract, no public
-name tag, currently holds **505,977.95 USDC**. The half-million balance suggests an
-aggregation or deposit contract of some service rather than a personal wallet. Identifying
-what sits behind it is the most valuable open lead in this case.
+**Final destination `0x5aa5f7f84ed0e5db0a4a85c3947ea16b53352fd4` — IDENTIFIED:
+Symbiosis Finance cross-chain bridge.**
+
+- Contract is **verified**, and is a **proxy** (implementation `0x80347BfC…BC9B51630`)
+- Contract creator: **`Symbiosis: Deployer`**, deployed ~3 years 269 days ago
+- All inbound calls use the **`Synthesize`** method — Symbiosis' cross-chain entry function
+- 3,640 transactions; >$1,019,084 in >110 tokens; $1,054,491 multichain portfolio
+
+**Correction:** the ~506k USDC balance is the bridge's own liquidity, **not** attacker funds.
+An earlier version of this file suggested it might be an aggregation wallet — that was wrong.
+
+So Route A is also a bridge, not an off-ramp: USDT was swapped to USDC via 1inch and then
+pushed cross-chain through Symbiosis. **Both cash-out routes leave BSC through bridges**
+(Symbiosis and Bridgers/SWFT), which means the funds' destination chain is where any
+interception would have to happen.
 
 ### Route B — cross-chain swap, 2026-07-04
 
