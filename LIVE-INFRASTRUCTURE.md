@@ -262,6 +262,72 @@ files. For a hosting provider holding access logs, six second-accurate timestamp
 filter — whoever authenticated at 05:08 on 29 July, at 10:39 on 30 July and at 14:40 on 31 July
 is the operator, identified without touching the blockchain.
 
+## The funnel, recovered in full — including an instruction to hold more money
+
+The complete funnel copy ships to every visitor inside the page payload and can be read without
+passing the gate. Recovered 2026-08-10:
+
+**Products.** Three cards: two at *"Price: 1.00 USDT"*, one premium at *"Price: 50.00 USDT"*.
+Advertised limits: 10,000 USD, 20,000 USD and *"Unlimited"* per transaction.
+
+**Trust-building claims, all fabricated.** *"Trust ranks first in the world by number of users,
+with more than 300,000 cards already issued"*; *"Join 500,000+ users who trust Trust Card"*;
+*"Get approved in seconds, not days. No credit checks, no paperwork. Just connect your wallet."*
+
+**A referral scheme.** *"Get 5 USDT for every friend"* — *"Enjoying the card? Recommend TrustCard
+to your friends and get paid for it."* Victims are recruited to bring further victims.
+
+**The reassurance, offered by the people about to take everything:**
+
+> *"Your funds cannot be frozen, and the card cannot be blocked."*
+
+**The aggravating instruction.** Two separate tiers push the visitor to keep a large balance in
+the very wallet that will be emptied:
+
+> *"**Maintain a balance of $20,000 or more in your connected wallet.** Unlock Priority Pass,
+> higher limits, and elevated rewards."*
+>
+> *"**Hold $20,000 or more in your portfolio** and receive the physical metal card."*
+
+This is not passive deception. The operation deliberately instructs victims to increase the
+amount at risk before the approval is signed, which bears directly on the assessment of intent
+and of loss.
+
+**The signing ladder**, verbatim:
+
+```
+step1  Connect your wallet
+       "Open the app and approve the Trust connection. Payments will be charged
+        directly from your wallet."
+step2  We are preparing your transaction
+step3  Confirm the transaction in your wallet
+step4  Please confirm the transaction in your wallet again
+step5  You closed WalletConnect
+step6  Card issuance costs $1. Connect another wallet
+```
+
+Error strings confirm a WalletConnect integration and repeated retry prompts
+(*"The user rejected the transaction signature"*, *"WalletConnect session expired. Please
+reconnect your wallet"*, *"You canceled the transaction. If needed, you can try again"*).
+
+### Why the gate could not be triggered from a workstation
+
+For completeness: the funnel could not be made to render outside a genuine device session.
+Everything forgeable in a request was attempted and changed nothing — Facebook in-app user
+agents for both iOS (`FBAN/FBIOS`) and Android (`FB_IAB/FB4A`), the campaign's own advertising
+parameters, `Referer`, `Accept-Language`, cookies, `X-Forwarded-For`, a full browser header set,
+a simulated web3 provider injected before page scripts, and DOM removal of the decoy overlay.
+The rewrite target and response were identical in every case.
+
+What remains is not forgeable from a workstation: the bot score Cloudflare passes to the origin,
+and the TLS fingerprint of the connection. That is consistent with a middleware decision keyed
+on client reputation rather than on request contents — and it is why the decoy is what scanners,
+researchers and ad reviewers always see.
+
+The page routes reveal the decoy is a purpose-built product in itself. Its stylesheet defines ten
+variants (`v1`–`v10`) and named layouts `cardScanner`, `cardQueue`, `cardDevice`, `cardTunnel`,
+`cardTimeline`, `cardTerminal`, `cardMinimal` — seven of which were observed live.
+
 ## A third wave was registered the same day — through a second registrar
 
 On 2026-08-10 at 14:14 UTC, three more domains of the same campaign were registered within
