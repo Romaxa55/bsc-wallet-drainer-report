@@ -370,6 +370,50 @@ return HTTP 403 *"Suspected Phishing"*. Abuse report sent to FEMOIT 2026-08-11 c
 four that remained live, with a preservation request for the customer account and the six
 deployment timestamps as an access-log filter.
 
+### The provider hosts phishing at scale
+
+A survey of public urlscan.io records for `page.asn:"AS214351"` returns **249 unique domains**.
+A sample of what they impersonate, by page title:
+
+```
+20  Riot Games / VALORANT       "TenZ × VALORANT — Signature Vault", "VALORANT: Riot Games"
+14  Game rewards                "Official Game Rewards - Spin & Win", "Free Skin Roulette"
+ 6  "Human Verification"        the same decoy-shell technique used against us
+ 3  Navy Federal                "Navy Federal Customer Service" — US bank impersonation
+ 3  Onyx / XCN Ledger           cryptocurrency
+10  FASTPANEL                   hosting control panel, bare
+```
+
+Observed origin addresses in that space include `62.60.226.55` (68 domains),
+`196.251.107.176` (31), `62.60.226.88` (28), `192.162.199.233` and `192.162.199.234`.
+
+**Caveat, stated plainly:** none of *our* six domains appear in that ASN survey, because they
+sit behind Cloudflare and urlscan records the CDN address rather than the origin. The link
+between this cluster and FEMOIT rests on Cloudflare's own statement in its abuse responses, not
+on independent observation of the origin address. It is an authoritative attribution from the
+CDN, but it is second-hand and should be recorded as such.
+
+What the survey does establish independently is context: this is a provider carrying phishing
+infrastructure at volume, across multiple impersonated brands, including the same cloaking
+technique documented here.
+
+### Result of the reports: four of six domains taken down
+
+Cloudflare acted on every report and restricted access to the domains, one response per hostname:
+
+| Domain | Status 2026-08-11 22:09 UTC |
+|---|---|
+| `trusted-settings.com` | **HTTP 403 — Suspected Phishing** (this is the one that took my funds) |
+| `trusted-settings.org` | **HTTP 403 — Suspected Phishing** |
+| `promo-settings.com` | **HTTP 403 — Suspected Phishing** |
+| `promo-settings.org` | **HTTP 403 — Suspected Phishing** |
+| `wallet-settings.org` | still serving |
+| `promo-premium.pro` | still serving |
+
+The entire wave-3 set (`gettrustcard.pro`, `trust-credit-card.pro`, `trust-credit.pro`) no
+longer resolves at all, as do all wave-1 domains. Of eleven domains documented in this report,
+**two remain live**.
+
 ## Who is who, and who holds what
 
 Every party that can be asked for something, and what each one actually has.
