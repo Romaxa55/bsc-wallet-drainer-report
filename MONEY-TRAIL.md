@@ -471,8 +471,16 @@ Two data points do not establish a rule, and this is offered as an observation, 
   fund their per-order deposit addresses with gas so the address can sweep itself, and
   Etherscan labels the funder `ChangeNOW: Deposit Funder 9`. The observed pattern —
   gas in, sweep out, repeat — matches that mechanism exactly.
-- `0xdd3d72c53f…` is most likely the corresponding **ChangeNOW collection wallet**, on the
-  scale-of-activity evidence above.
+- `0xdd3d72c53f…` is most likely the corresponding **ChangeNOW collection wallet**. Three
+  independent indicators now point the same way: the Etherscan label on the gas funder above;
+  the scale of activity (1,662,599 transactions, 760 distinct tokens), which is characteristic
+  of an exchange rather than an individual; and — established 2026-08-11 — an outgoing transfer
+  of ChangeNOW's own branded token from that wallet during the same hour the stolen funds
+  arrived. On 2026-07-13 at 18:24:11 UTC it sent 2,718.524494 NOW
+  (`0xe9a95d175a5f4c9369f3b74222402eb1b837693b`, name "ChangeNOW") in transaction
+  `0x5ed02d8a11d832f48e32d39c12c7da4c76dfc78e1ad4c358f5a00cdbbaf8b572`.
+  Holding a token does not by itself prove ownership of a wallet, so this remains an
+  inference — but a considerably stronger one than scale alone.
 
 Neither address currently carries a public name tag on Etherscan, Blockscout or Ethplorer.
 The attribution therefore needs confirmation from ChangeNOW itself — which only ChangeNOW
