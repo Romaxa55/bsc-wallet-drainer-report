@@ -157,8 +157,16 @@ tx    0xe26636d7d2d8c8f7186e89c5be5a66fdca8fd3af70f826f612f42e459267c843
 from  0xeb2d2f1b8c558a40207669291fda468e50c8a0bb   ← "Binance: Hot Wallet 10"
 to    0x7c51bc888362a93dab88cdbb2d6b6baed2d74f6d   ← the operator
 value 14.99 USDT
-date  ~2026-07-12
+date  2026-07-11 18:12:35 UTC   (block 109409511, status success)
 ```
+
+Re-verified 2026-08-11 directly from the transaction receipt. An earlier revision of this
+file gave the date as "~2026-07-12"; the block timestamp is 2026-07-11 18:12:35 UTC.
+
+**The 14.99 USDT has never been spent.** The operator wallet still holds exactly that amount
+today. The withdrawal has the shape of an address test — a small sum moved off the exchange to
+confirm the destination works — carried out two days before the Symbiosis bridging of
+2026-07-13.
 
 ### Why this matters
 

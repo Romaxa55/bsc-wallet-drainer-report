@@ -1,18 +1,26 @@
-# Active wallet drainer on BNB Smart Chain — incident report
+# Active multi-chain wallet drainer — incident report
 
-**Status: funds still unmoved.** As of 2026-08-10 the attacker has not laundered anything — all
-stolen funds sit on a single collector wallet, untouched.
+**Status: funds still unmoved.** As of 2026-08-11 the attacker has not laundered the current
+balances — they sit on collector wallets, untouched, on two chains.
+
+> **Update 2026-08-11 — this is not a BNB Chain operation.** The same drainer contract address
+> `0x3a85da7f43c7b9946a450b55019f3e05e637ab11` carries **identical bytecode (9,242 bytes) on
+> five chains** — Ethereum, BNB Chain, Arbitrum, Optimism and Base — and `owner()` returns the
+> same address on every one. Sixteen further victims were identified on Ethereum, where
+> **4,191.58 USDT and 1,920.03 USDC are still sitting on a collector that has never sent a
+> single transaction** (nonce 0). See [MONEY-TRAIL.md](MONEY-TRAIL.md).
 
 | | |
 |---|---|
-| **Victims** | **45** (updated 2026-08-10 — see [full cluster analysis](FULL-CLUSTER-ANALYSIS.md)) |
-| **Total stolen** | **63,477.36 USD** in stablecoins + other tokens |
-| **Collectors** | **2** — one already cashed out, one still holding |
-| **Period** | 2026-07-22 → 2026-08-08 |
-| **Funds still recoverable** | 17,369.26 USD on collector #1, untouched (nonce = 1) |
-| **Operation status** | Phishing domain still live as of 2026-08-09 |
+| **Victims** | **61** — 45 on BNB Chain, 16 more on Ethereum |
+| **Total stolen** | **63,477.36 USD** on BNB Chain, plus 6,111.61 USD on Ethereum |
+| **Chains** | **5** — Ethereum, BNB Chain, Arbitrum, Optimism, Base (same contract, same owner) |
+| **Collectors** | **2 addresses**, each holding balances on multiple chains |
+| **Period** | 2026-06-30 → 2026-08-10 |
+| **Still recoverable** | 17,369.26 USD (BNB Chain, no freeze function) + **6,781 USD in freezable stablecoins** on Ethereum / Optimism / Arbitrum |
+| **Operation status** | five phishing domains restricted by Cloudflare 2026-08-10; last victim deposit 2026-08-10 15:03 UTC |
 
-Everything below is verifiable by anyone on [bscscan.com](https://bscscan.com) — no trust required.
+Everything below is verifiable by anyone against public nodes — no trust required.
 
 ---
 
@@ -114,6 +122,8 @@ data   = (recipient, amount)
 
 **Complete data:**
 - **[LIVE-INFRASTRUCTURE.md](LIVE-INFRASTRUCTURE.md)** — the domain cluster, the exposed origin server, deployment timestamps, cloaking mechanics and every report filed. **Start here if you work at a registrar, CDN or hosting provider.**
+- **[CASE-MAP.md](CASE-MAP.md)** — **start here.** The whole operation on one page: flow diagram, what is verified vs inferred, the eight open questions and who can answer each, and the predicted path the remaining funds will take.
+- **[MONEY-TRAIL.md](MONEY-TRAIL.md)** — where the laundered funds actually went: BNB Chain → Symbiosis bridge → Ethereum → a service wallet with 1.66M transactions. 233,511 USDT through one consolidation address in a single day. **Start here if you work at an exchange or at Tether** — the funds become real ERC-20 USDT, which *can* be frozen.
 - **[ALL-SWEEPS.md](ALL-SWEEPS.md)** — all 51 sweep events: victim → collector → token → amount → timestamp
 - **[all-sweeps.csv](all-sweeps.csv)** — same data, machine-readable
 - **[GAS-FUNDING.md](GAS-FUNDING.md)** / [gas-funding.csv](gas-funding.csv) — every gas-funding transfer the operator sent to his targets, decoded tx-level
