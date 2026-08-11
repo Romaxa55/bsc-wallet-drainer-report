@@ -215,10 +215,19 @@ Bytecode analysis of `0x55d398326f99059ff775485246999027b3197955` shows:
 - **absent: `blacklist`, `addBlackList`, `freeze`, `pause`, `destroyBlackFunds`**
 - contract is **not upgradeable** — such functions cannot be added later
 
-Therefore the funds cannot be frozen at token level by anyone. The only realistic interception
-point is the moment the attacker deposits them into a centralized exchange, where KYC and
-account freezes apply. The collector wallet is under continuous monitoring for exactly that
-event.
+Therefore the funds cannot be frozen at token level by anyone **while they remain on BNB Chain**.
+
+That is not the end of it, though. Tracing both of the operator's earlier cash-outs showed that
+he does not cash out on BNB Chain at all — he bridges to Ethereum first, and on the other side
+the value arrives as **genuine ERC-20 Tether** `0xdac17f958d2ee523a2206206994597c13d831ec7`,
+Tether's own contract, with a working blacklist function. The same applies to the 1,920.03 USDC
+already sitting on the Ethereum collector, which Circle can freeze.
+
+So the interception point is not the exchange deposit at the end of the chain — by then the
+funds are commingled with thousands of unrelated users' money and cannot be separated. **It is
+the bridge crossing**, and both previous crossings were followed by 7–22 hours of inactivity
+before distribution began. See [MONEY-TRAIL.md](MONEY-TRAIL.md) for the full route with
+transaction hashes.
 
 ---
 
@@ -226,17 +235,51 @@ event.
 
 | Date (2026) | Channel | Reference / status |
 |---|---|---|
-| 08-08 | Tether compliance | #459702 — declined (correctly: token is Binance-issued) |
-| 08-09 | **FBI IC3** | Submission `5036615c3cd54d23ba7bd1c089786d1d` |
-| 08-09 | **FBI IC3 — update** | Submission `7f90f61bf96c4dc585999781b2483aa7` (full victim list) |
-| 08-09 | Registrar abuse (Trustname) | Case **#ABS-48193** — under investigation, RAA §3.18.1 |
-| 08-09 | Chainabuse | Filed — all three addresses tagged |
+| 08-08 | Tether compliance | **#459702** — declined, correctly: the stolen token is Binance-issued. Reopened 08-11 on new grounds, see below |
+| 08-09 | **FBI IC3** | `5036615c3cd54d23ba7bd1c089786d1d` — main complaint |
+| 08-09 | **FBI IC3** — update 1 | `7f90f61bf96c4dc585999781b2483aa7` — full victim list |
+| 08-09 | Registrar abuse (Trustname) | **#ABS-48193**, later **#ABS-48857** — RAA §3.18.1 |
+| 08-09 | Chainabuse | `dd005758-ff9e-4aca-a747-45fe48b467fc` — all addresses tagged |
 | 08-09 | SEAL 911 / Security Alliance | Contacted for tracing assistance |
 | 08-09 | BscScan | Address watchlist + phishing report |
+| 08-10 | **FBI IC3** — updates 2–5 | `37289b4b2028461289a70e32c4345128` (45 victims, bridges), `f020e29e05a446618f2911d68b1b51a0` (Binance withdrawal), `012e182ac6f049e18e95f3c067748f46` (domain cluster), `074a52029d8c4936aefaf50a9aa56b2f` (hosting, deploy timings) |
+| 08-10 | **BNB Chain** official support | `4bcf92ea-7a94-4711-a02e-f882757f0fcc` — **answered**: confirmed in writing that Binance-Peg BSC-USD has no freeze/blacklist function and is not upgradeable |
+| 08-10 | **FBI IC3** — update 6 | `805f8b82ecd54261aa1979c288fac363` — five chains, 16 further victims, freezable balances |
+| 08-10/11 | Cloudflare abuse | Six reports — **all nine domains restricted**, hosting provider disclosed |
+| 08-10/11 | HashDit (BNB Chain security partner) | Addresses **flagged with partner services**, phishing domains flagged |
+| 08-11 | Tether — reopened | **#459702** — new grounds: both laundering channels convert the proceeds into genuine ERC-20 Tether on Ethereum, which *is* freezable |
+| 08-11 | **ChangeNOW** compliance | **Answered**: *"Upon request from authorities we will be able to block all the relevant addresses and provide all the data available"* |
+| 08-11 | **SWFT / Bridgers** | Notified, incl. their own order ID `o3lkby` recovered from the contract log |
+| 08-11 | **Symbiosis** | Notified — records preservation request for the 2026-07-13 bridge transaction |
+| 08-11 | **Binance** support | Case **#167289747** — records preservation request, escalated to the Security team |
 
 ---
 
-## If you are one of the 14 victims
+## For investigators — where legal process should go
+
+Compiled the hard way, by asking each service directly. Every item below is either a written
+answer received or a published policy, not a guess.
+
+| Target | Channel | What they can actually do |
+|---|---|---|
+| **Binance** | Law Enforcement Portal at `binance.com/en/support/law-enforcement` — mark the legal process type as **`Exigent`** for urgent requests. Russian/Belarusian agencies: `case@binanceholdings.ru` | Identify the account behind withdrawal `0xe26636d7…`. Confirmed to cooperate **only** with law enforcement — victims cannot obtain account data or freezes directly |
+| **Tether** | `support@tether.to`, existing ticket **#459702** | Freeze genuine ERC-20 USDT on Ethereum. Cannot touch Binance-Peg BSC-USD on BNB Chain — different issuer, no freeze function |
+| **Circle** | `support@circle.com` | Freeze USDC — 1,920.03 USDC sits on the Ethereum collector |
+| **ChangeNOW** | `compliance@changenow.io`, guidelines at `changenow.io/en/law-enforcement-request-guidelines` | Stated they will block relevant addresses and provide data on an authorities' request. Wants addresses in XLSX/CSV. Has an expedited track — mark `URGENT` with justification |
+| **SWFT / Bridgers** | `contact@swft.pro`, `bd@swft.pro` | **Cannot freeze anything** — published policy states they are "unable to restrict, transfer, or otherwise perform sensitive operations on users' crypto assets". Entity is Explorerx Digital Limited, **Seychelles**; foreign agencies need authorisation signed by the Seychelles Attorney General. Retention **12 months** — the window on the 2026-07-04 transaction closes around July 2027 |
+| **Symbiosis** | `legal@symbiosis.finance` | Bridge request records, relayer records, originating IP, integrator attribution for the 2026-07-13 swap |
+| **BNB Chain** | `@bnbchain_official_bot` on Telegram | Confirmed no technical recovery path exists at token level. Routes address flagging via HashDit |
+
+**The single interception point.** On BNB Chain the stolen token cannot be frozen by anyone —
+this is settled, in writing, by BNB Chain themselves. After a bridge crossing the same value
+becomes genuine ERC-20 Tether on Ethereum, which Tether *can* freeze. **That crossing is the
+only moment the money is recoverable**, and both previous cash-outs took 7–22 hours between
+leaving BNB Chain and being distributed. The route is known in advance; the funds have not
+moved yet.
+
+---
+
+## If you are one of the 60 victims
 
 **Not sure if you were hit?** → **[CHECK-IF-AFFECTED.md](CHECK-IF-AFFECTED.md)** — a
 2-minute check using only a block explorer, no wallet connection required.
