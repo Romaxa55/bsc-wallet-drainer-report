@@ -1,7 +1,8 @@
 # Active multi-chain wallet drainer — incident report
 
-**Status: funds still unmoved.** As of 2026-08-11 the attacker has not laundered the current
-balances — they sit on collector wallets, untouched, on two chains.
+**Status: all nine domains down, funds still unmoved.** As of 2026-08-11 16:25 UTC every
+hostname in this cluster returns "Suspected Phishing | Cloudflare" — the operation has no live
+intake anywhere. The stolen balances sit on collector wallets, untouched, on two chains.
 
 > **Update 2026-08-11 — this is not a BNB Chain operation.** The same drainer contract address
 > `0x3a85da7f43c7b9946a450b55019f3e05e637ab11` carries **identical bytecode (9,242 bytes) on
@@ -18,7 +19,7 @@ balances — they sit on collector wallets, untouched, on two chains.
 | **Collectors** | **2 addresses**, each holding balances on multiple chains |
 | **Period** | 2026-06-30 → 2026-08-10 |
 | **Still recoverable** | 17,369.26 USD (BNB Chain, no freeze function) + **6,781 USD in freezable stablecoins** on Ethereum / Optimism / Arbitrum |
-| **Operation status** | five phishing domains restricted by Cloudflare 2026-08-10; last victim deposit 2026-08-10 15:03 UTC |
+| **Operation status** | **all nine domains restricted** — five on 2026-08-10, two on 2026-08-11, wave 3 no longer resolves. Last victim deposit 2026-08-10 15:03 UTC |
 
 Everything below is verifiable by anyone against public nodes — no trust required.
 
