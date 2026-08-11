@@ -64,7 +64,7 @@ flowchart TD
 | How victims are recruited | **Verified** — paid Meta ad, campaign ID recorded |
 | How the theft works | **Verified** — unlimited ERC-20 approve, swept 6 seconds later |
 | How many chains | **Verified** — 5, identical 9,242-byte bytecode, same `owner()` |
-| How many victims | **Verified** — 61 (45 BNB Chain, 16 Ethereum) |
+| How many victims | **Verified** — 60 unique (45 BNB Chain, 16 Ethereum, one address in both) |
 | Who executes the thefts | **Verified** — one address, all 51 sweeps |
 | Where the money went | **Verified** to a service wallet, then **unknowable** |
 | Which service that is | **Inferred only** — gas funder labelled `ChangeNOW: Deposit Funder 9` |

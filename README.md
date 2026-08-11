@@ -12,7 +12,7 @@ balances — they sit on collector wallets, untouched, on two chains.
 
 | | |
 |---|---|
-| **Victims** | **61** — 45 on BNB Chain, 16 more on Ethereum |
+| **Victims** | **60 unique** — 45 on BNB Chain, 16 on Ethereum, one address counted in both |
 | **Total stolen** | **63,477.36 USD** on BNB Chain, plus 6,111.61 USD on Ethereum |
 | **Chains** | **5** — Ethereum, BNB Chain, Arbitrum, Optimism, Base (same contract, same owner) |
 | **Collectors** | **2 addresses**, each holding balances on multiple chains |
