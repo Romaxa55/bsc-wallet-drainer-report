@@ -346,6 +346,58 @@ them within roughly two hours. The operator is moving registrars (Fewmoretaps �
 while running the same kit, which is why preservation requests to the registrars matter now
 rather than later.
 
+## A fourth registrar, and domains bought six months in advance
+
+*Added 2026-08-12.*
+
+The reconstruction above — three waves, registered in bursts through Fewmoretaps and then
+NiceNIC as the campaign ran — turns out to be incomplete. Registry data (RDAP, Identity
+Digital) shows a third registrar holding domains bought **long before the operation
+started**:
+
+| Domain | Registered | Registrar | First certificate |
+|---|---|---|---|
+| `trust-premium.pro` | **2025-12-26** | PDR Ltd. d/b/a PublicDomainRegistry.com | 2026-06-21 |
+| `trustcard.pro` | **2026-02-08** | PDR Ltd. d/b/a PublicDomainRegistry.com | 2026-06-07 |
+| `trust-card.pro` | **2026-02-26** | PDR Ltd. d/b/a PublicDomainRegistry.com | 2026-06-24 |
+
+The first victim in this cluster was drained on **2026-06-30**. These three domains predate
+that by four to six months.
+
+That changes the profile. The burst registrations of 28 July and 10 August read like
+someone reacting — replacing domains as they are taken down. These three read like
+inventory: bought quietly, held unused, certificates issued only in June when the campaign
+was being assembled.
+
+**The practical consequence for anyone else tracking this actor:** unused domains held in
+reserve are invisible to open-source investigation. A domain that has never resolved
+appears in no certificate transparency log, no scanner, no passive DNS record. If this
+account holds more of them, they are the next wave and nothing outside the registrar can
+see them. That is why the request to PDR asks for a review of the entire account rather
+than the three domains named.
+
+### One domain was live and unrestricted until 2026-08-12
+
+`trust-premium.pro` was missed by every earlier abuse report in this cluster. It was not
+restricted, and the distinction from a restricted domain is measurable:
+
+```
+trust-card.pro       HTTPS → HTTP 403 in 0.12 s     restricted; Cloudflare serves the page
+trust-premium.pro    HTTPS → no response, 10.0 s    live zone, origin unreachable
+http://trust-premium.pro/  → 301 to HTTPS           redirect issued by Cloudflare
+A records                  → 104.21.36.41, 172.67.184.185
+NS                         → coco/hassan.ns.cloudflare.com
+Registry status            → active
+```
+
+A restricted zone answers instantly because the request never reaches an origin. This one
+waits ten seconds and fails, because Cloudflare accepts the request and tries.
+
+The origin is unreachable because the hosting behind this cluster was removed after abuse
+reports — not because the domain was ever acted on. **Restoring service requires pointing
+the existing zone at a new origin IP.** No registration, no new certificate. That is why a
+dormant domain in a dead cluster is still worth reporting.
+
 ## The origin was disclosed by Cloudflare — FEMO IT SOLUTIONS (AS214351, GB)
 
 DNS, certificate transparency and subdomain enumeration all dead-ended on the Cloudflare-fronted

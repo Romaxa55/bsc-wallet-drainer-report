@@ -1,6 +1,10 @@
 # Active multi-chain wallet drainer — incident report
 
-**Status: all nine domains down, funds still unmoved.** As of 2026-08-11 16:25 UTC every
+**Status: intake fully down, proceeds still unmoved.** As of 2026-08-12 nine domains are
+restricted by Cloudflare, six no longer resolve, and the origin server is offline. A tenth
+domain — `trust-premium.pro`, registered 2025-12-26 and missed by every earlier report —
+was found dormant-but-unrestricted on 2026-08-12 and reported; see
+[LIVE-INFRASTRUCTURE.md](LIVE-INFRASTRUCTURE.md). As of 2026-08-11 16:25 UTC every
 hostname in this cluster returns "Suspected Phishing | Cloudflare" — the operation has no live
 intake anywhere. The stolen balances sit on collector wallets, untouched, on two chains.
 
@@ -19,7 +23,8 @@ intake anywhere. The stolen balances sit on collector wallets, untouched, on two
 | **Collectors** | **2 addresses**, each holding balances on multiple chains |
 | **Period** | 2026-06-30 → 2026-08-10 |
 | **Still recoverable** | 17,369.26 USD (BNB Chain, no freeze function) + **6,781 USD in freezable stablecoins** on Ethereum / Optimism / Arbitrum |
-| **Operation status** | **all nine domains restricted** — five on 2026-08-10, two on 2026-08-11, wave 3 no longer resolves. Last victim deposit 2026-08-10 15:03 UTC |
+| **Registrars** | **4** — Fewmoretaps/Trustname (8 domains), NiceNIC (3), PDR/PublicDomainRegistry (3, bought Dec 2025–Feb 2026), plus registry data still being collected |
+| **Operation status** | **no live intake** — nine domains restricted by Cloudflare, six no longer resolve, one dormant zone reported 2026-08-12, origin server offline. Last victim deposit 2026-08-10 15:03 UTC |
 
 Everything below is verifiable by anyone against public nodes — no trust required.
 

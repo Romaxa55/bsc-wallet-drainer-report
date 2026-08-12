@@ -359,11 +359,43 @@ interstitial. The operator rotates registrars mid-campaign.
 14:14:47 UTC   trust-credit.pro
 ```
 
+### WAVE 0 — bought six months early, through a third registrar
+
+*Added 2026-08-12.*
+
+Three domains predate the entire campaign. The first victim was drained 2026-06-30; these
+were registered in December 2025 and February 2026, through a registrar that appears
+nowhere in Waves 1–3:
+
+```
+2025-12-26   trust-premium.pro    PDR Ltd. d/b/a PublicDomainRegistry.com
+2026-02-08   trustcard.pro        PDR Ltd. d/b/a PublicDomainRegistry.com
+2026-02-26   trust-card.pro       PDR Ltd. d/b/a PublicDomainRegistry.com
+```
+
+First certificates were issued 2026-06-07, 06-21 and 06-24 — the domains sat unused for
+months, then were prepared as the campaign was assembled.
+
+**Hunting implication.** Waves 1–3 are reactive: domains registered in 77- and 47-second
+bursts as earlier ones were taken down. Wave 0 is inventory. If this actor holds further
+unused domains at the same registrar, **they cannot be found from outside** — a domain that
+has never resolved leaves no certificate transparency record, no passive DNS entry, no
+scanner history. Only the registrar can enumerate them.
+
+If you are tracking this cluster: registrar account enumeration is the only avenue that
+surfaces the next wave before it goes live.
+
 ### Registrar totals
 
 **Fewmoretaps OÜ d/b/a Trustname.com (Estonia)** — EIGHT domains across Waves 1 and 2.
 Abuse case `#ABS-48857`, under RAA 3.18.1 review (supersedes `#ABS-48193`).
 **NICENIC INTERNATIONAL GROUP (Hong Kong)** — three domains, Wave 3.
+**PDR Ltd. d/b/a PublicDomainRegistry.com (India)** — three domains, Wave 0.
+Abuse contact `abuse@publicdomainregistry.com`; report filed 2026-08-12 requesting
+account-wide review.
+
+Four registrars, three of which were used concurrently. Registrar rotation is part of the
+operating pattern, not a one-off reaction.
 
 ### Advertising and campaign identifiers
 
