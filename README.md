@@ -17,12 +17,12 @@ intake anywhere. The stolen balances sit on collector wallets, untouched, on two
 
 | | |
 |---|---|
-| **Victims** | **60 unique** — 45 on BNB Chain, 16 on Ethereum, one address counted in both |
-| **Total stolen** | **63,477.36 USD** on BNB Chain, plus 6,111.61 USD on Ethereum |
+| **Victims** | **60 unique** — 45 on BNB Chain, 42 on Ethereum, overlap counted once |
+| **Total stolen** | **405,338 USD** — 63,477 on BNB Chain, 341,861 on Ethereum. Includes a single 184.77 stETH theft worth 330,364 USD, found 2026-08-12 |
 | **Chains** | **5** — Ethereum, BNB Chain, Arbitrum, Optimism, Base (same contract, same owner) |
 | **Collectors** | **2 addresses**, each holding balances on multiple chains |
 | **Period** | 2026-06-30 → 2026-08-10 |
-| **Still recoverable** | 17,369.26 USD (BNB Chain, no freeze function) + **6,781 USD in freezable stablecoins** on Ethereum / Optimism / Arbitrum |
+| **Still on the collectors** | 24,487 USD — 17,369 on BNB Chain (no freeze function) + **~6,790 in freezable stablecoins** on Ethereum / Arbitrum / Optimism. The 330,364 USD stETH theft was liquidated on 2026-07-12 and is gone |
 | **Registrars** | **4** — Fewmoretaps/Trustname (8 domains), NiceNIC (3), PDR/PublicDomainRegistry (3, bought Dec 2025–Feb 2026), plus registry data still being collected |
 | **Operation status** | **no live intake** — nine domains restricted by Cloudflare, six no longer resolve, one dormant zone reported 2026-08-12, origin server offline. Last victim deposit 2026-08-10 15:03 UTC |
 
@@ -129,7 +129,7 @@ data   = (recipient, amount)
 **Complete data:**
 - **[LIVE-INFRASTRUCTURE.md](LIVE-INFRASTRUCTURE.md)** — the domain cluster, the exposed origin server, deployment timestamps, cloaking mechanics and every report filed. **Start here if you work at a registrar, CDN or hosting provider.**
 - **[CASE-MAP.md](CASE-MAP.md)** — **start here.** The whole operation on one page: flow diagram, what is verified vs inferred, the eight open questions and who can answer each, and the predicted path the remaining funds will take.
-- **[MONEY-TRAIL.md](MONEY-TRAIL.md)** — where the laundered funds actually went: BNB Chain → Symbiosis bridge → Ethereum → a service wallet with 1.66M transactions. 233,511 USDT through one consolidation address in a single day. **Start here if you work at an exchange or at Tether** — the funds become real ERC-20 USDT, which *can* be frozen.
+- **[MONEY-TRAIL.md](MONEY-TRAIL.md)** — where the laundered funds actually went, traced transaction by transaction. Includes section 3F: the **184.77 stETH theft worth 330,364 USD**, liquidated the same day via CoW Protocol and 1inch, and followed through five previously undocumented addresses to the same terminus. **Start here if you work at an exchange or at Tether** — the proceeds become real ERC-20 USDT, which *can* be frozen.
 - **[ALL-SWEEPS.md](ALL-SWEEPS.md)** — all 51 sweep events: victim → collector → token → amount → timestamp
 - **[all-sweeps.csv](all-sweeps.csv)** — same data, machine-readable
 - **[GAS-FUNDING.md](GAS-FUNDING.md)** / [gas-funding.csv](gas-funding.csv) — every gas-funding transfer the operator sent to his targets, decoded tx-level

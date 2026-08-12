@@ -8,6 +8,34 @@ separately. Nothing in the verified section depends on a third-party label.
 
 ---
 
+## 0. Correction, 2026-08-12 — the scale of this case was understated by a factor of five
+
+Everything below was written while filtering for three token contracts: USDT, USDC and
+Binance-Peg BSC-USD. That was a mistake in method, and it hid the largest single theft in
+the case.
+
+Re-examined by taking **every transfer with method `pull`** and only then identifying the
+token, the picture changes:
+
+```
+previously reported     69,588 USD
+actual                 405,338 USD
+```
+
+The difference is one victim. On 2026-07-12 at 02:22:11 UTC, **184.7728 stETH** was pulled
+from `0xB0A6A253839744C11657D71961A868E207b49284` — worth **330,364 USD** at that day's ETH
+price. That is more than all fifty-nine other victims combined.
+
+Nine distinct tokens were taken on Ethereum, not two: USDT, USDC, stETH, DIA, WLFI, ENA,
+OVR, ELON and Wrapped MistCoin. The operator takes whatever a victim holds.
+
+**The stETH was liquidated the same day**, and section 3F traces it end to end. One
+consequence matters for everything written below: the 233,511 USDT that section 3 attributes
+to the Symbiosis bridge is **89% proceeds from that single stETH theft**, not bridge output.
+Section 3 has not been rewritten — it is left as filed, with this correction on top.
+
+---
+
 ## 1. Executive summary
 
 The operation runs two collector addresses on BNB Smart Chain. They behave completely
@@ -454,6 +482,106 @@ The Ethereum balance has not reached that threshold. That appears to be the only
 remains.
 
 Two data points do not establish a rule, and this is offered as an observation, not a law.
+
+---
+
+## 3F. The 330,000 USD theft, traced end to end
+
+*Added 2026-08-12. Every step below is reproducible from public nodes.*
+
+### The theft
+
+```
+2026-07-12 02:22:11 UTC
+184.7728 stETH   method: pull
+from  0xB0A6A253839744C11657D71961A868E207b49284   (victim)
+to    0x62f1a65cdf65ab42a6b520510d58f2f71750ea56   (Collector #2)
+tx    0xb0bc24ac114d64f0331a95f79e69497f0416034cc1d18378c7630b0efdbaeff4
+```
+
+Worth **330,364 USD** at that day's ETH price of 1,787.95 USD.
+
+### Liquidation, same day
+
+The stETH was swapped through **CoW Protocol Settlement**
+(`0x9008D19f58AAbD9eD0D60971565AA8510560ab41`) in five transactions between 16:42 and 20:06
+UTC, producing WETH, which was then **unwrapped into native ETH**.
+
+That unwrap is why this leg was invisible in earlier analysis: WETH is burned to
+`0x0000…0000`, and the resulting native ETH does not appear in ERC-20 transfer listings at
+all. It arrives as an **internal transaction**, and only shows up if you look for it.
+
+```
+183.9510 ETH returned to Collector #2 as internal transfers
+```
+
+### Conversion to USDT
+
+Four native transfers to `0xE7e68D336F90f98D22A479253eafA5f2424aCaD8`, a contract labelled
+**OnchainGateway** — an on-chain swap aggregator whose `onswap(address,uint256,address,address,bytes)`
+routes through 1inch AggregationRouterV5:
+
+```
+19:32:23    40.0 ETH  →   72,786.89 USDT  → 0x72eA9a18F7bC1fa066f64a12F13E3599f52c5804
+19:42:47    50.0 ETH  →   90,927.01 USDT  → 0x18676B8832530e5ce5fca085a81d8490418C8b1c
+22:09:47    25.0 ETH  →   44,958.66 USDT  → 0x72eA9a18F7bC1fa066f64a12F13E3599f52c5804
+22:24:35    69.5 ETH  →  125,179.35 USDT  → 0xa6B147e66C9F15C7cbe27D6c1530200B4E22E400
+                        ──────────────
+                          333,851.91 USDT
+```
+
+### Consolidation, next day
+
+```
+0x72eA9a18…  117,745.55  ┐
+0x18676B88…   90,927.01  ├→  0x7F8AC505bf807D2B380202A6DBf180975Ce33008
+                          ┘
+0xa6B147e6…  125,179.35  →   0x630884EC2e018E5E69586976E8C5fd44c3AcE082
+```
+
+Both consolidation addresses then forwarded everything to
+**`0xdd3d72c53ff982ff59853da71158bf1538b3ceee`** — the same terminus documented in sections
+3 and 3A, reached on 2026-07-13 between 17:53 and 18:11 UTC.
+
+### What this corrects
+
+Section 3 reports 233,511.17 USDT arriving at `0x7f8ac505…` on 2026-07-13 and attributes it
+to the Symbiosis bridge. The actual composition:
+
+```
+117,745.55  +  90,927.01  =  208,672.56   stETH proceeds        (89%)
+                              24,838.60   Symbiosis bridge      (11%)
+                             ───────────
+                              233,511.16
+```
+
+The bridge was the smaller channel. Most of that money was a single victim's staked ether.
+
+### Three addresses not previously documented
+
+```
+0x72eA9a18F7bC1fa066f64a12F13E3599f52c5804    117,745.55 USDT passed through, now empty
+0xa6B147e66C9F15C7cbe27D6c1530200B4E22E400    125,179.35 USDT passed through, now empty
+0x630884EC2e018E5E69586976E8C5fd44c3AcE082    125,179.35 USDT passed through, now empty
+```
+
+All three are EOAs, all emptied within hours, none reused — consistent with the single-use
+wallet pattern described in section 3B.
+
+### A third counterfeit USDT contract
+
+```
+0xd407252b1878c106702bea4344e9a8d9a79ac438    9 transfers, 347,296 fake "units"
+0x014eec197df382f9ce403f6fe7d384e13aa932e9
+0xd9330ea6ee8881cb2827533930f7737f23287179
+```
+
+These inflate `0x18676b88…` to an apparent 606,125 USDT of outflow against a real figure of
+115,765.61. **Filter by contract address, never by token name.**
+
+One practical note for anyone reproducing this with the Blockscout API: the contract address
+field in a token transfer is `token.address_hash`, not `token.address`. Filtering on
+`address` silently matches nothing and lets every counterfeit through.
 
 ---
 
