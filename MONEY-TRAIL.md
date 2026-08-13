@@ -511,6 +511,28 @@ That unwrap is why this leg was invisible in earlier analysis: WETH is burned to
 `0x0000…0000`, and the resulting native ETH does not appear in ERC-20 transfer listings at
 all. It arrives as an **internal transaction**, and only shows up if you look for it.
 
+**The unwrap is not incidental.** Industry reporting through 2026 describes converting
+proceeds into **assets that cannot be frozen — native ETH or DAI — before moving into
+stablecoins near the cash-out point**. Native ETH has no issuer and no blacklist function:
+Tether, Circle and everyone else are equally powerless against it, unlike stETH, WETH or any
+stablecoin.
+
+So the sequence has a purpose beyond obscurity:
+
+```
+stETH          Lido token, theoretically freezable
+   ↓
+WETH           still a contract
+   ↓
+native ETH     ← CANNOT BE FROZEN BY ANYONE
+   ↓ held in this form until the last step
+USDT           freezable again, but only at the exchanger's door
+```
+
+He held 184 ether in an untouchable form and converted to USDT only because the exchanger
+accepts stablecoins. That the same step also hid 330,364 USD from ERC-20 analysis was
+probably a side effect — but it proved more effective than the deliberate decoys.
+
 ```
 183.9510 ETH returned to Collector #2 as internal transfers
 ```
