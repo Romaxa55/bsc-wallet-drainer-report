@@ -3,9 +3,36 @@
 Every native BNB transfer sent by the operator `0x7c51bc888362a93dab88cdbb2d6b6baed2d74f6d`, decoded individually from chain data
 (not inferred from explorer row matching). Sender and recipient verified at transaction level for each entry.
 
-**42 transfers** · **41** fall in the 0.00016–0.00019 BNB signature band · range 0.00010000–0.00018379 BNB
+**44 transfers** · **42** fall in the 0.00016–0.00019 BNB signature band · range 0.0000075–0.00018379 BNB
 
-The operator pays his targets' gas so they can sign the approval. Amounts track the prevailing gas price rather than a fixed constant — he computes the cost of exactly one `approve` at send time.
+The operator pays his targets' gas so they can sign the approval.
+
+> **Correction 2026-08-14.** This file previously said the amounts "track the prevailing gas
+> price". That is wrong. **Every funding transfer is worth exactly 0.10 USD at the moment it is
+> sent** — the backend divides a fixed 10-cent constant by the live coin price and sends the
+> result. That is why the BNB figures all differ while the dollar value does not:
+>
+> ```
+> 2026-07-01   0.000183210248174816 BNB x $550.05 = $0.100775
+> 2026-07-15   0.000172539284080827 BNB x $580.12 = $0.100093
+> 2026-08-08   0.000167990256994300 BNB x $600.41 = $0.100863
+> 2026-08-13   0.000163769161353252 BNB x $610.15 = $0.099931
+> ```
+>
+> Forty-two consecutive transfers land between $0.0986 and $0.1036 — a +/-3% spread explained by
+> intraday drift against a daily close.
+>
+> **The same constant is used on Ethereum**: the 2026-08-14 funding of 0.000053023316598122 ETH
+> at $1,886 is $0.09999.
+>
+> **He overpays by ~71x.** The `approve` signed by the 2026-08-13 victim cost 0.00000231 BNB.
+> A 10-cent constant implies a 3.56 Gwei gas price; BNB Chain currently runs at 0.05 Gwei. The
+> constant was calibrated for pre-reduction fees and never revisited — so the victim keeps
+> almost all of it, 0.00016146 BNB of the 0.00016377 sent.
+
+**Why this matters for detection.** A native transfer worth almost exactly 0.10 USD, sent to a
+wallet that has never interacted with the sender, is a far tighter signature than any BNB amount
+band — it holds across chains and across price regimes.
 
 | # | Time (UTC) | Recipient | Amount BNB | In band | Outcome | Funding tx |
 |---|---|---|---|---|---|---|
