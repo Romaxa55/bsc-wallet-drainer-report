@@ -1,7 +1,7 @@
 # INDICATORS — canonical list
 
 **This is the single file to watch.** All new indicators (domains, collectors, cash-out hops,
-campaign IDs) are added here. Last updated: **2026-08-10** — operator traced to a Binance withdrawal (KYC lead); operation still live.
+campaign IDs) are added here. Last updated: **2026-08-14** — intake confirmed live again; a victim was swept 2026-08-13 23:36 UTC through a domain not in this report.
 
 **How this repo is organised.** This file is the *operational* view: what to act on, who is at
 risk right now, what to capture when funds move. The full decoded datasets live alongside it —
@@ -200,6 +200,63 @@ entire 45-victim operation to an identified individual.
 
 Binance operates a law-enforcement request portal (Kodex). This is not something a victim can
 submit — it requires an agency. The FBI IC3 complaints referenced below are the vehicle.
+
+
+## 🚨 INTAKE IS LIVE AGAIN — 2026-08-13
+
+A victim was drained last night. The sequence, from the chain:
+
+| Time (UTC) | Event | Tx |
+|---|---|---|
+| 2026-08-13 23:35:47 | Operator sends the victim gas — 0.000163769161353252 BNB | [`0xda5c6130…ac6a`](https://bscscan.com/tx/0xda5c6130c6a080868506964d26d239b4dc0701dc2876092c0b1d8b7651bbac6a) |
+| 2026-08-13 23:36:19 | **Victim signs the approval** (+32 s) | [`0x9fed5965…7ae4`](https://bscscan.com/tx/0x9fed596564a80cf988fb13e0f696114893cf45ef4304454cfe28231ccd397ae4) |
+| 2026-08-13 23:36:26 | Swept — **7,731.173607880465111116 BSC-USD** (+7 s) | [`0xd838f41c…f61c`](https://bscscan.com/tx/0xd838f41c6e5f64958cbf8474b8321e4da4844d8077b936972ce76b3a6ccff61c) |
+
+Victim: [`0xa5187f47d789e7333bf4803199407c7882958da8`](https://bscscan.com/address/0xa5187f47d789e7333bf4803199407c7882958da8) —
+balance now 0, allowance still live.
+
+Drainer, operator and collector are all unchanged.
+
+### Why this matters more than the amount
+
+**The approval is 7 seconds old at the moment of the sweep.** This is not an old allowance
+being exercised — it is a fresh signature from a working funnel.
+
+**The gas arrived 32 seconds *before* the victim signed.** The operator's backend saw a wallet
+connect with no gas and topped it up so the victim could confirm. The site was serving at that
+moment.
+
+**Yet no domain in this report was reachable.** All 17 were checked the same morning: NXDOMAIN
+or the Cloudflare interstitial, and the origin 54.39.106.37 is offline.
+
+The conclusion is unavoidable: **at least one live hostname exists that this report does not
+have.** If you can identify a BNB Chain phishing page active around 2026-08-13 23:30–23:40 UTC
+requesting an approval to `0x3a85da7f43c7b9946a450b55019f3e05e637ab11`, please open an issue.
+
+### Two approval formats — detection note
+
+Not every approval in this campaign is max-uint:
+
+```
+victim 2026-08-02   100000000000000000000000000000
+victim 2026-08-08   115792089237316195423570985008687907853269984665640564039457584007913129639935
+victim 2026-08-13   100000000000000000000000000000
+```
+
+100 billion exceeds Tether's entire supply, so the practical effect is identical to an
+unlimited approval — but wallet UIs raise the red "Unlimited approval" warning only for
+`2^256-1`. A specific number passes without it.
+
+We cannot date when the alternation began or explain it; both formats appear across the
+campaign. Noted because **detection rules keyed on max-uint will miss half of these**.
+
+### Collector balance
+
+`0x5655e7a5197cc1a1805387bc82dfffe901dfc552` now holds **25,100.430942 BSC-USD**, up from
+17,369.26. The increase is exactly last night's theft. The address has made **one** outgoing
+transaction in its entire history — nonce is still 1. Nothing has ever been withdrawn.
+
+---
 
 ## 🔴 OPERATION IS STILL LIVE — victims currently in the pipeline
 

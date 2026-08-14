@@ -1,12 +1,19 @@
 # Active multi-chain wallet drainer — incident report
 
-**Status: intake fully down, proceeds still unmoved.** As of 2026-08-12 nine domains are
-restricted by Cloudflare, six no longer resolve, and the origin server is offline. A tenth
-domain — `trust-premium.pro`, registered 2025-12-26 and missed by every earlier report —
-was found dormant-but-unrestricted on 2026-08-12 and reported; see
-[LIVE-INFRASTRUCTURE.md](LIVE-INFRASTRUCTURE.md). As of 2026-08-11 16:25 UTC every
-hostname in this cluster returns "Suspected Phishing | Cloudflare" — the operation has no live
-intake anywhere. The stolen balances sit on collector wallets, untouched, on two chains.
+**Status: INTAKE IS LIVE AGAIN. A new theft occurred 2026-08-13 23:36:26 UTC — 7,731.17 USDT.**
+Every one of the 17 domains known to this report is now either NXDOMAIN or returns the
+Cloudflare "Suspected Phishing" interstitial, and the origin server 54.39.106.37 is offline.
+Yet the approval that enabled last night's theft was signed **7 seconds before the sweep** —
+a fresh signature, not an old allowance. **There is at least one live domain this report does
+not have.** If you can identify it, please open an issue. See
+[INDICATORS.md](INDICATORS.md#-intake-is-live-again--2026-08-13).
+
+> **Previous status line, now retracted.** Until 2026-08-13 this report stated the operation had
+> "no live intake". That was true of the domains we could see and false about the operation.
+> Absence of a reachable domain in our list is not evidence that intake stopped.
+
+The stolen balances still sit on the collector wallets, untouched, on two chains — the
+BNB Chain collector has made **one** outgoing transaction in its entire history.
 
 > **Update 2026-08-11 — this is not a BNB Chain operation.** The same drainer contract address
 > `0x3a85da7f43c7b9946a450b55019f3e05e637ab11` carries **identical bytecode (9,242 bytes) on
@@ -17,14 +24,14 @@ intake anywhere. The stolen balances sit on collector wallets, untouched, on two
 
 | | |
 |---|---|
-| **Victims** | **60 unique** — 45 on BNB Chain, 42 on Ethereum, overlap counted once |
+| **Victims** | **61 unique** — 46 on BNB Chain, 42 on Ethereum, overlap counted once. Latest: 2026-08-13 |
 | **Total stolen** | **405,338 USD** — 63,477 on BNB Chain, 341,861 on Ethereum. Includes a single 184.77 stETH theft worth 330,364 USD, found 2026-08-12 |
 | **Chains** | **5** — Ethereum, BNB Chain, Arbitrum, Optimism, Base (same contract, same owner) |
 | **Collectors** | **2 addresses**, each holding balances on multiple chains |
-| **Period** | 2026-06-30 → 2026-08-10 |
-| **Still on the collectors** | 24,487 USD — 17,369 on BNB Chain (no freeze function) + **~6,790 in freezable stablecoins** on Ethereum / Arbitrum / Optimism. The 330,364 USD stETH theft was liquidated on 2026-07-12 and is gone |
+| **Period** | 2026-06-30 → **2026-08-13, ongoing** |
+| **Still on the collectors** | 32,219 USD — **25,100 on BNB Chain** (no freeze function) + **~6,790 in freezable stablecoins** on Ethereum / Arbitrum / Optimism. The 330,364 USD stETH theft was liquidated on 2026-07-12 and is gone |
 | **Registrars** | **4** — Fewmoretaps/Trustname (8 domains), NiceNIC (3), PDR/PublicDomainRegistry (3, bought Dec 2025–Feb 2026), plus registry data still being collected |
-| **Operation status** | **no live intake** — nine domains restricted by Cloudflare, six no longer resolve, one dormant zone reported 2026-08-12, origin server offline. Last victim deposit 2026-08-10 15:03 UTC |
+| **Operation status** | **LIVE** — a victim signed and was swept 2026-08-13 23:36 UTC. All 17 known domains are down or restricted, so the funnel runs on a hostname not in this report |
 
 Everything below is verifiable by anyone against public nodes — no trust required.
 
